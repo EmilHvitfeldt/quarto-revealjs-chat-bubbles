@@ -1,0 +1,18 @@
+project:
+  type: website
+  output-dir: docs
+  render:
+    - index.qmd
+    - example.qmd
+
+website:
+  title: "quarto-revealjs-chat-bubbles"
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+
+format:
+  html:
+    theme: cosmo
+    toc: false

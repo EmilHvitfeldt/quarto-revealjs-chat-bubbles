@@ -1,0 +1,106 @@
+---
+title: "quarto-revealjs-chat-bubbles"
+subtitle: "iOS-style chat bubbles for Quarto Reveal.js presentations"
+format:
+  html:
+    theme: cosmo
+---
+
+Add iMessage-style chat bubbles to your Quarto Reveal.js presentations. Messages appear one at a time as fragments, and long conversations scroll automatically to keep the latest message in view.
+
+[GitHub](https://github.com/EmilHvitfeldt/quarto-revealjs-chat-bubbles){.btn .btn-outline-secondary}
+
+<iframe src="example.html" width="100%" height="500px" style="border: 1px solid #dee2e6; border-radius: 6px;"></iframe>
+
+---
+
+## Installation
+
+```bash
+quarto add EmilHvitfeldt/quarto-revealjs-chat-bubbles
+```
+
+---
+
+## Usage
+
+Enable the plugin in your presentation front matter:
+
+```yaml
+format:
+  revealjs: default
+revealjs-plugins:
+  - chat-bubbles
+```
+
+Then write a conversation using `.chat` and bubble classes. Add `.fragment` to any bubble you want to reveal on a keypress:
+
+```markdown
+::: {.chat}
+::: {.bubble-right}
+Hey, are you coming tonight?
+:::
+
+::: {.fragment .bubble-left}
+Yeah! What time does it start?
+:::
+
+::: {.fragment .bubble-right}
+Doors open at 7
+:::
+:::
+```
+
+---
+
+## Bubble classes
+
+| Class | Side | Color |
+|-------|------|-------|
+| `.bubble-right` | Right | iMessage blue |
+| `.bubble-left` | Left | Light gray |
+| `.bubble-left-2` | Left | Green |
+| `.bubble-left-3` | Left | Purple |
+
+`.bubble-right` is the "self" sender. Use `.bubble-left` variants for other participants — useful for group conversations with multiple speakers.
+
+---
+
+## Group chats
+
+Use all four classes together for multi-person conversations:
+
+```markdown
+::: {.chat}
+::: {.bubble-right}
+Alright who's bringing what to the potluck?
+:::
+
+::: {.fragment .bubble-left}
+I can do dessert
+:::
+
+::: {.fragment .bubble-left-2}
+I'll bring drinks
+:::
+
+::: {.fragment .bubble-left-3}
+Can I just bring chips
+:::
+:::
+```
+
+---
+
+## Customizing colors
+
+Override the CSS custom properties in your own stylesheet:
+
+```css
+:root {
+  --bubble-blue:   #FF3B30;  /* sender bubble   */
+  --bubble-gray:   #E9E9EB;  /* first receiver  */
+  --bubble-green:  #34C759;  /* second receiver */
+  --bubble-purple: #AF52DE;  /* third receiver  */
+}
+```

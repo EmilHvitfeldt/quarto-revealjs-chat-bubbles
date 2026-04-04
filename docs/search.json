@@ -1,0 +1,65 @@
+[
+  {
+    "objectID": "example.html#romeo-juliet-act-ii-scene-ii",
+    "href": "example.html#romeo-juliet-act-ii-scene-ii",
+    "title": "quarto-revealjs-chat-bubbles",
+    "section": "Romeo & Juliet — Act II, Scene II",
+    "text": "Romeo & Juliet — Act II, Scene II\nRomeo · Juliet\n\n\nO Romeo, Romeo, wherefore art thou Romeo?\n\n\nI take thee at thy word. Call me but love, and I’ll be new baptized.\n\n\nWhat man art thou that, thus bescreened in night, so stumblest on my counsel?\n\n\nBy a name I know not how to tell thee who I am. My name, dear saint, is hateful to myself.\n\n\nMy ears have not yet drunk a hundred words of that tongue’s uttering, yet I know the sound.\n\n\nAlack, there lies more peril in thine eye than twenty of their swords."
+  },
+  {
+    "objectID": "example.html#little-women-chapter-xi",
+    "href": "example.html#little-women-chapter-xi",
+    "title": "quarto-revealjs-chat-bubbles",
+    "section": "Little Women — Chapter XI",
+    "text": "Little Women — Chapter XI\nJo · Meg · Amy · Beth\n\n\nI shall write a splendid book someday, and then we shall all be proud of me!\n\n\nWe are proud of you now, Jo, but do try to speak properly.\n\n\nI think it’s very becoming to be modest about one’s gifts.\n\n\nI hope the book will be very good, Jo.\n\n\nIt shall be! Full of thrilling adventure and noble heroines. Nothing meek about them.\n\n\nNothing meek at all, I’m sure of that.\n\n\nWill there be any fashionable people in it?\n\n\nPlenty of interesting ones, Amy, but fashionable is not the same as interesting.\n\n\nI should like to read it very much."
+  },
+  {
+    "objectID": "example.html#hamlet-act-i-scene-v",
+    "href": "example.html#hamlet-act-i-scene-v",
+    "title": "quarto-revealjs-chat-bubbles",
+    "section": "Hamlet — Act I, Scene V",
+    "text": "Hamlet — Act I, Scene V\nHamlet · Horatio · Marcellus\n\n\nThere are more things in heaven and earth, Horatio, than are dreamt of in your philosophy.\n\n\nO day and night, but this is wondrous strange!\n\n\nAnd therefore as a stranger give it welcome.\n\n\nHow is’t, my noble lord?\n\n\nO, wonderful!\n\n\nGood my lord, tell it.\n\n\nNo, you’ll reveal it.\n\n\nNot I, my lord, by heaven.\n\n\nNor I, my lord.\n\n\nHow say you then — would heart of man once think it? But you’ll be secret?\n\n\nAy, by heaven, my lord."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "quarto-revealjs-chat-bubbles",
+    "section": "",
+    "text": "Add iMessage-style chat bubbles to your Quarto Reveal.js presentations. Messages appear one at a time as fragments, and long conversations scroll automatically to keep the latest message in view.\nGitHub"
+  },
+  {
+    "objectID": "index.html#installation",
+    "href": "index.html#installation",
+    "title": "quarto-revealjs-chat-bubbles",
+    "section": "Installation",
+    "text": "Installation\nquarto add EmilHvitfeldt/quarto-revealjs-chat-bubbles"
+  },
+  {
+    "objectID": "index.html#usage",
+    "href": "index.html#usage",
+    "title": "quarto-revealjs-chat-bubbles",
+    "section": "Usage",
+    "text": "Usage\nEnable the plugin in your presentation front matter:\nformat:\n  revealjs: default\nrevealjs-plugins:\n  - chat-bubbles\nThen write a conversation using .chat and bubble classes. Add .fragment to any bubble you want to reveal on a keypress:\n::: {.chat}\n::: {.bubble-right}\nHey, are you coming tonight?\n:::\n\n::: {.fragment .bubble-left}\nYeah! What time does it start?\n:::\n\n::: {.fragment .bubble-right}\nDoors open at 7\n:::\n:::"
+  },
+  {
+    "objectID": "index.html#bubble-classes",
+    "href": "index.html#bubble-classes",
+    "title": "quarto-revealjs-chat-bubbles",
+    "section": "Bubble classes",
+    "text": "Bubble classes\n\n\n\nClass\nSide\nColor\n\n\n\n\n.bubble-right\nRight\niMessage blue\n\n\n.bubble-left\nLeft\nLight gray\n\n\n.bubble-left-2\nLeft\nGreen\n\n\n.bubble-left-3\nLeft\nPurple\n\n\n\n.bubble-right is the “self” sender. Use .bubble-left variants for other participants — useful for group conversations with multiple speakers."
+  },
+  {
+    "objectID": "index.html#group-chats",
+    "href": "index.html#group-chats",
+    "title": "quarto-revealjs-chat-bubbles",
+    "section": "Group chats",
+    "text": "Group chats\nUse all four classes together for multi-person conversations:\n::: {.chat}\n::: {.bubble-right}\nAlright who's bringing what to the potluck?\n:::\n\n::: {.fragment .bubble-left}\nI can do dessert\n:::\n\n::: {.fragment .bubble-left-2}\nI'll bring drinks\n:::\n\n::: {.fragment .bubble-left-3}\nCan I just bring chips\n:::\n:::"
+  },
+  {
+    "objectID": "index.html#customizing-colors",
+    "href": "index.html#customizing-colors",
+    "title": "quarto-revealjs-chat-bubbles",
+    "section": "Customizing colors",
+    "text": "Customizing colors\nOverride the CSS custom properties in your own stylesheet:\n:root {\n  --bubble-blue:   #FF3B30;  /* sender bubble   */\n  --bubble-gray:   #E9E9EB;  /* first receiver  */\n  --bubble-green:  #34C759;  /* second receiver */\n  --bubble-purple: #AF52DE;  /* third receiver  */\n}"
+  }
+]
