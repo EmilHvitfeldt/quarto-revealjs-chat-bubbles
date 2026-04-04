@@ -1,0 +1,128 @@
+:root {
+  --bubble-blue:   #1B93FF;
+  --bubble-gray:   #E9E9EB;
+  --bubble-green:  #34C759;
+  --bubble-purple: #AF52DE;
+}
+
+.chat {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.4rem;
+  padding: 1rem;
+  overflow-y: scroll;
+  max-height: 100%;
+  position: relative;
+  scrollbar-width: none;
+}
+
+.chat::-webkit-scrollbar {
+  display: none;
+}
+
+.chat::after {
+  content: '';
+  display: block;
+  min-height: 150px;
+  flex-shrink: 0;
+}
+
+.bubble-right,
+.bubble-left,
+.bubble-left-2,
+.bubble-left-3 {
+  max-width: 65%;
+  padding: 0.55em 0.9em;
+  border-radius: 1.2em;
+  font-size: 0.9em;
+  line-height: 1.4;
+  position: relative;
+  word-wrap: break-word;
+}
+
+.bubble-right {
+  align-self: flex-end;
+  background-color: var(--bubble-blue);
+  color: #ffffff;
+  border-bottom-right-radius: 0.25em;
+}
+
+.bubble-right::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: -0.45em;
+  width: 0.5em;
+  height: 0.75em;
+  background-color: var(--bubble-blue);
+  clip-path: polygon(0 0, 0% 100%, 100% 100%);
+}
+
+.bubble-left,
+.bubble-left-2,
+.bubble-left-3 {
+  align-self: flex-start;
+  border-bottom-left-radius: 0.25em;
+}
+
+.bubble-left::after,
+.bubble-left-2::after,
+.bubble-left-3::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -0.45em;
+  width: 0.5em;
+  height: 0.75em;
+  clip-path: polygon(100% 0, 0% 100%, 100% 100%);
+}
+
+.bubble-left {
+  background-color: var(--bubble-gray);
+  color: #000000;
+}
+
+.bubble-left::after {
+  background-color: var(--bubble-gray);
+}
+
+.bubble-left-2 {
+  background-color: var(--bubble-green);
+  color: #ffffff;
+}
+
+.bubble-left-2::after {
+  background-color: var(--bubble-green);
+}
+
+.bubble-left-3 {
+  background-color: var(--bubble-purple);
+  color: #ffffff;
+}
+
+.bubble-left-3::after {
+  background-color: var(--bubble-purple);
+}
+
+/* Fragment animation */
+
+.reveal .slides section .fragment.bubble-right,
+.reveal .slides section .fragment.bubble-left,
+.reveal .slides section .fragment.bubble-left-2,
+.reveal .slides section .fragment.bubble-left-3 {
+  opacity: 0;
+  visibility: visible;
+  transform: translateY(8px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+
+.reveal .slides section .fragment.bubble-right.visible,
+.reveal .slides section .fragment.bubble-left.visible,
+.reveal .slides section .fragment.bubble-left-2.visible,
+.reveal .slides section .fragment.bubble-left-3.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}

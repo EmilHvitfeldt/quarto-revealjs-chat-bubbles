@@ -1,0 +1,108 @@
+---
+format:
+  revealjs:
+    theme: default
+    width: 1280
+    height: 720
+pagetitle: Chat Bubbles Example
+echo: false
+code-line-numbers: false
+revealjs-plugins:
+  - chat-bubbles
+---
+
+## Chat bubbles demo
+
+::: {.chat}
+::: {.bubble-right}
+Hey, are you coming tonight?
+:::
+
+::: {.fragment .bubble-left}
+Yeah! What time does it start?
+:::
+
+::: {.fragment .bubble-right}
+Doors open at 7
+:::
+
+::: {.fragment .bubble-left}
+Perfect, see you there!
+:::
+:::
+
+## Group chat demo
+
+::: {.chat}
+::: {.bubble-right}
+Alright who's bringing what to the potluck?
+:::
+
+::: {.fragment .bubble-left}
+I can do dessert 🎂
+:::
+
+::: {.fragment .bubble-left-2}
+I'll bring drinks
+:::
+
+::: {.fragment .bubble-left-3}
+Can I just bring chips
+:::
+
+::: {.fragment .bubble-right}
+Jordan you always bring chips
+:::
+
+::: {.fragment .bubble-left-3}
+Chips are valid
+:::
+
+::: {.fragment .bubble-left}
+He's not wrong
+:::
+
+::: {.fragment .bubble-left-2}
+Lol fine chips and dip at least
+:::
+
+::: {.fragment .bubble-left-3}
+Deal
+:::
+:::
+
+## Chat bubbles overflow demo
+
+::: {.chat}
+::: {.bubble-right}
+Did you watch the game last night?
+:::
+
+::: {.fragment .bubble-left}
+Of course! What a finish
+:::
+
+::: {.fragment .bubble-right}
+I couldn't believe that last minute goal
+:::
+
+::: {.fragment .bubble-left}
+Neither could I, I literally jumped off the couch
+:::
+
+::: {.fragment .bubble-right}
+Haha same. Are you going to the next one?
+:::
+
+::: {.fragment .bubble-left}
+Thinking about it. Tickets are expensive though
+:::
+
+::: {.fragment .bubble-right}
+I know a guy, I can get us a deal
+:::
+
+::: {.fragment .bubble-left}
+Seriously?? Yes please
+:::
+:::

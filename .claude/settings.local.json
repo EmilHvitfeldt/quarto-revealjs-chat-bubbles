@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(grep -v \"^\\\\./\\\\.\\\\.$\")",
+      "WebFetch(domain:slidecrafting-book.com)",
+      "WebFetch(domain:quarto.org)"
+    ]
+  }
+}
