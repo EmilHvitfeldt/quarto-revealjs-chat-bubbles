@@ -11,98 +11,124 @@ revealjs-plugins:
   - chat-bubbles
 ---
 
-## Chat bubbles demo
+## Romeo & Juliet — Act II, Scene II
+
+*Romeo · Juliet*
 
 ::: {.chat}
-::: {.bubble-right}
-Hey, are you coming tonight?
-:::
-
-::: {.fragment .bubble-left}
-Yeah! What time does it start?
+::: {.bubble-left}
+O Romeo, Romeo, wherefore art thou Romeo?
 :::
 
 ::: {.fragment .bubble-right}
-Doors open at 7
+I take thee at thy word. Call me but love, and I'll be new baptized.
 :::
 
 ::: {.fragment .bubble-left}
-Perfect, see you there!
+What man art thou that, thus bescreened in night, so stumblest on my counsel?
+:::
+
+::: {.fragment .bubble-right}
+By a name I know not how to tell thee who I am. My name, dear saint, is hateful to myself.
+:::
+
+::: {.fragment .bubble-left}
+My ears have not yet drunk a hundred words of that tongue's uttering, yet I know the sound.
+:::
+
+::: {.fragment .bubble-right}
+Alack, there lies more peril in thine eye than twenty of their swords.
 :::
 :::
 
-## Group chat demo
+## Little Women — Chapter XI
+
+*Jo · Meg · Amy · Beth*
 
 ::: {.chat}
 ::: {.bubble-right}
-Alright who's bringing what to the potluck?
+I shall write a splendid book someday, and then we shall all be proud of me!
 :::
 
 ::: {.fragment .bubble-left}
-I can do dessert 🎂
+We are proud of you now, Jo, but do try to speak properly.
 :::
 
 ::: {.fragment .bubble-left-2}
-I'll bring drinks
+I think it's very becoming to be modest about one's gifts.
 :::
 
 ::: {.fragment .bubble-left-3}
-Can I just bring chips
+I hope the book will be very good, Jo.
 :::
 
 ::: {.fragment .bubble-right}
-Jordan you always bring chips
-:::
-
-::: {.fragment .bubble-left-3}
-Chips are valid
+It shall be! Full of thrilling adventure and noble heroines. Nothing meek about them.
 :::
 
 ::: {.fragment .bubble-left}
-He's not wrong
+Nothing meek at all, I'm sure of that.
 :::
 
 ::: {.fragment .bubble-left-2}
-Lol fine chips and dip at least
+Will there be any fashionable people in it?
+:::
+
+::: {.fragment .bubble-right}
+Plenty of interesting ones, Amy, but fashionable is not the same as interesting.
 :::
 
 ::: {.fragment .bubble-left-3}
-Deal
+I should like to read it very much.
 :::
 :::
 
-## Chat bubbles overflow demo
+## Hamlet — Act I, Scene V
+
+*Hamlet · Horatio · Marcellus*
 
 ::: {.chat}
 ::: {.bubble-right}
-Did you watch the game last night?
+There are more things in heaven and earth, Horatio, than are dreamt of in your philosophy.
 :::
 
 ::: {.fragment .bubble-left}
-Of course! What a finish
+O day and night, but this is wondrous strange!
 :::
 
 ::: {.fragment .bubble-right}
-I couldn't believe that last minute goal
+And therefore as a stranger give it welcome.
 :::
 
-::: {.fragment .bubble-left}
-Neither could I, I literally jumped off the couch
-:::
-
-::: {.fragment .bubble-right}
-Haha same. Are you going to the next one?
-:::
-
-::: {.fragment .bubble-left}
-Thinking about it. Tickets are expensive though
+::: {.fragment .bubble-left-2}
+How is't, my noble lord?
 :::
 
 ::: {.fragment .bubble-right}
-I know a guy, I can get us a deal
+O, wonderful!
 :::
 
 ::: {.fragment .bubble-left}
-Seriously?? Yes please
+Good my lord, tell it.
+:::
+
+::: {.fragment .bubble-right}
+No, you'll reveal it.
+:::
+
+::: {.fragment .bubble-left}
+Not I, my lord, by heaven.
+:::
+
+::: {.fragment .bubble-left-2}
+Nor I, my lord.
+:::
+
+::: {.fragment .bubble-right}
+How say you then — would heart of man once think it? But you'll be secret?
+:::
+
+::: {.fragment .bubble-left}
+Ay, by heaven, my lord.
 :::
 :::
