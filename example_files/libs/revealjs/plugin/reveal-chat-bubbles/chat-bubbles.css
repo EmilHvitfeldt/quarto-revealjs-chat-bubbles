@@ -21,6 +21,11 @@
   display: none;
 }
 
+.chat.is-scrolled {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 80px);
+  mask-image: linear-gradient(to bottom, transparent 0%, black 80px);
+}
+
 .chat::after {
   content: '';
   display: block;

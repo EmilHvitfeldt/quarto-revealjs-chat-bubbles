@@ -11,6 +11,14 @@ window.RevealChatBubbles = function () {
 
       const buffer = 150;
 
+      deck.on('ready', () => {
+        document.querySelectorAll('.chat').forEach(chat => {
+          chat.addEventListener('scroll', () => {
+            chat.classList.toggle('is-scrolled', chat.scrollTop > 0);
+          });
+        });
+      });
+
       deck.on('fragmentshown', (event) => {
         const fragment = event.fragment;
         if (!isBubble(fragment)) return;
