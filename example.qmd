@@ -96,10 +96,6 @@ There are more things in heaven and earth, Horatio, than are dreamt of in your p
 O day and night, but this is wondrous strange!
 :::
 
-::: {.fragment .bubble-right}
-And therefore as a stranger give it welcome.
-:::
-
 ::: {.fragment .bubble-left-2}
 How is't, my noble lord?
 :::
@@ -130,5 +126,69 @@ How say you then — would heart of man once think it? But you'll be secret?
 
 ::: {.fragment .bubble-left}
 Ay, by heaven, my lord.
+:::
+:::
+
+## Hamlet — Reactions Demo
+
+*Hamlet · Horatio · Marcellus*
+
+::: {.chat}
+::: {.bubble-right}
+There are more things in heaven and earth, Horatio, than are dreamt of in your philosophy.
+:::
+
+[😮]{.fragment .reaction}
+
+[👍]{.fragment .reaction}
+
+::: {.fragment .bubble-left}
+O day and night, but this is wondrous strange!
+:::
+
+[😂]{.fragment .reaction}
+
+::: {.fragment .bubble-right}
+And therefore as a stranger give it welcome.
+:::
+
+::: {.fragment .bubble-left-2}
+How is't, my noble lord?
+:::
+
+[❤️]{.fragment .reaction}
+
+::: {.fragment .bubble-right}
+O, wonderful!
+:::
+
+[😂]{.fragment .reaction}
+
+[🎭]{.fragment .reaction}
+:::
+
+## Hamlet — Delayed Reactions
+
+*Hamlet · Horatio · Marcellus*
+
+::: {.chat}
+::: {.bubble-right}
+There are more things in heaven and earth, Horatio, than are dreamt of in your philosophy.
+:::
+
+::: {.fragment .bubble-left fragment-index="1"}
+O day and night, but this is wondrous strange!
+:::
+
+[😮]{.fragment .reaction fragment-index="4"}
+
+[❤️]{.fragment .reaction fragment-index="5"}
+
+::: {.fragment .bubble-right fragment-index="2"}
+And therefore as a stranger give it welcome.
+:::
+
+::: {.fragment .bubble-left-2 fragment-index="3"}
+How is't, my noble lord?
 :::
 :::

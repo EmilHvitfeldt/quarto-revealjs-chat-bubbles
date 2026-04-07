@@ -50,6 +50,61 @@ The first bubble can be left without `.fragment` to appear immediately when the 
 
 `.bubble-right` is the "self" sender. The three `.bubble-left` variants are for other participants, useful for group conversations.
 
+## Emoji reactions
+
+Add `.reaction` fragments after a bubble to attach emoji reactions to it. Each reaction appears as a small pill at the top corner of the bubble when revealed, and is removed when navigating backwards.
+
+The inline syntax is the most concise:
+
+```markdown
+::: {.chat}
+::: {.bubble-right}
+There are more things in heaven and earth, Horatio.
+:::
+
+[😮]{.fragment .reaction}
+[👍]{.fragment .reaction}
+
+::: {.fragment .bubble-left}
+O day and night, but this is wondrous strange!
+:::
+
+[😂]{.fragment .reaction}
+:::
+```
+
+The fenced div syntax also works and may be clearer when the emoji is ambiguous:
+
+```markdown
+::: {.fragment .reaction}
+😂
+:::
+```
+
+Multiple reactions on the same bubble stack side by side. Reactions can be added to any bubble — including ones that are not themselves fragments.
+
+To react to an older message after the conversation has progressed, place the reaction after its target bubble in the source and use `fragment-index` to control when it appears:
+
+```markdown
+::: {.chat}
+::: {.bubble-right}
+Message one
+:::
+
+[😮]{.fragment .reaction fragment-index="3"}
+
+::: {.fragment .bubble-left fragment-index="1"}
+Message two
+:::
+
+::: {.fragment .bubble-right fragment-index="2"}
+Message three
+:::
+:::
+```
+
+Here messages one, two, and three appear in order (steps 1–2), and then 😮 reacts to the first message at step 3. The reaction is linked to its target by DOM position, while `fragment-index` controls when it is revealed.
+
 ## Overflow
 
 If a conversation is too long to fit on the slide, the chat container will automatically scroll to keep the latest message visible. Navigating backwards scrolls back up.
