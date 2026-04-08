@@ -4,7 +4,11 @@
       "Bash(grep -v \"^\\\\./\\\\.\\\\.$\")",
       "WebFetch(domain:slidecrafting-book.com)",
       "WebFetch(domain:quarto.org)",
-      "Bash(quarto render:*)"
+      "Bash(quarto render:*)",
+      "Bash(gh pr:*)",
+      "WebFetch(domain:m.canouil.dev)",
+      "Bash(curl -s \"https://m.canouil.dev/quarto-wizard/dev/reference/schema-specification.html\")",
+      "Bash(curl -s \"https://m.canouil.dev/quarto-wizard/dev/reference/snippet-specification.html\")"
     ]
   }
 }
