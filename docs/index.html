@@ -256,15 +256,29 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <hr>
 </section>
+<section id="typing-indicator" class="level2">
+<h2 class="anchored" data-anchor-id="typing-indicator">Typing indicator</h2>
+<p>Add <code>.typing</code> to any <code>.fragment</code> bubble for a two-step reveal: the first keypress shows an animated three-dot typing indicator, and the next keypress expands the bubble and reveals the message text.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>::: {.chat}</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>::: {.bubble-right}</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>Are you still there?</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>::: {.fragment .bubble-left .typing}</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>Sorry, was typing a really long reply.</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
 <section id="customizing-colors" class="level2">
 <h2 class="anchored" data-anchor-id="customizing-colors">Customizing colors</h2>
 <p>Override the CSS custom properties in your own stylesheet:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="in">:root</span> {</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="va">--bubble-blue</span><span class="ch">:</span>   <span class="cn">#FF3B30</span><span class="op">;</span>  <span class="co">/* sender bubble   */</span></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="va">--bubble-gray</span><span class="ch">:</span>   <span class="cn">#E9E9EB</span><span class="op">;</span>  <span class="co">/* first receiver  */</span></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="va">--bubble-green</span><span class="ch">:</span>  <span class="cn">#34C759</span><span class="op">;</span>  <span class="co">/* second receiver */</span></span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="va">--bubble-purple</span><span class="ch">:</span> <span class="cn">#AF52DE</span><span class="op">;</span>  <span class="co">/* third receiver  */</span></span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode css code-with-copy"><code class="sourceCode css"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="in">:root</span> {</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="va">--bubble-blue</span><span class="ch">:</span>   <span class="cn">#FF3B30</span><span class="op">;</span>  <span class="co">/* sender bubble   */</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="va">--bubble-gray</span><span class="ch">:</span>   <span class="cn">#E9E9EB</span><span class="op">;</span>  <span class="co">/* first receiver  */</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="va">--bubble-green</span><span class="ch">:</span>  <span class="cn">#34C759</span><span class="op">;</span>  <span class="co">/* second receiver */</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="va">--bubble-purple</span><span class="ch">:</span> <span class="cn">#AF52DE</span><span class="op">;</span>  <span class="co">/* third receiver  */</span></span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 </section>

@@ -105,6 +105,24 @@ Message three
 
 Here messages one, two, and three appear in order (steps 1–2), and then 😮 reacts to the first message at step 3. The reaction is linked to its target by DOM position, while `fragment-index` controls when it is revealed.
 
+## Typing indicator
+
+Add `.typing` to any `.fragment` bubble to turn it into a two-step reveal. The first keypress shows the bubble with an animated three-dot typing indicator; the next keypress replaces the dots with the message text, with the bubble smoothly expanding to its full size.
+
+```markdown
+::: {.chat}
+::: {.bubble-right}
+Are you still there?
+:::
+
+::: {.fragment .bubble-left .typing}
+Sorry, was typing a really long reply.
+:::
+:::
+```
+
+Navigating backwards restores the typing indicator. The `.typing` class can be applied to any bubble class (`.bubble-right`, `.bubble-left`, `.bubble-left-2`, `.bubble-left-3`) and works alongside reactions and other fragments.
+
 ## Overflow
 
 If a conversation is too long to fit on the slide, the chat container will automatically scroll to keep the latest message visible. Navigating backwards scrolls back up.

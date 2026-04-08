@@ -165,6 +165,41 @@
   animation: reaction-out 0.2s ease forwards;
 }
 
+/* Typing indicator */
+
+@keyframes typing-dot {
+  0%, 60%, 100% { transform: translateY(0); }
+  30% { transform: translateY(-5px); }
+}
+
+.typing-indicator {
+  display: flex;
+  gap: 0.3em;
+  align-items: center;
+  padding: 0.15em 0;
+}
+
+.typing-indicator span {
+  display: inline-block;
+  width: 0.45em;
+  height: 0.45em;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.7;
+  animation: typing-dot 1.2s infinite ease-in-out;
+}
+
+.typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+.typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+/* When typing: show indicator, hide text */
+.is-typing .bubble-text { display: none; }
+.is-typing .typing-indicator { display: flex; }
+
+/* After text is revealed */
+.is-typing.text-revealed .bubble-text { display: block; }
+.is-typing.text-revealed .typing-indicator { display: none; }
+
 /* Fragment animation */
 
 .reveal .slides section .fragment.bubble-right,

@@ -21,6 +21,27 @@
     "text": "Hamlet — Act I, Scene V\nHamlet · Horatio · Marcellus\n\n\nThere are more things in heaven and earth, Horatio, than are dreamt of in your philosophy.\n\n\nO day and night, but this is wondrous strange!\n\n\nHow is’t, my noble lord?\n\n\nO, wonderful!\n\n\nGood my lord, tell it.\n\n\nNo, you’ll reveal it.\n\n\nNot I, my lord, by heaven.\n\n\nNor I, my lord.\n\n\nHow say you then — would heart of man once think it? But you’ll be secret?\n\n\nAy, by heaven, my lord."
   },
   {
+    "objectID": "example.html#hamlet-reactions-demo",
+    "href": "example.html#hamlet-reactions-demo",
+    "title": "quarto-revealjs-chat-bubbles",
+    "section": "Hamlet — Reactions Demo",
+    "text": "Hamlet — Reactions Demo\nHamlet · Horatio · Marcellus\n\n\nThere are more things in heaven and earth, Horatio, than are dreamt of in your philosophy.\n\n😮\n👍\n\nO day and night, but this is wondrous strange!\n\n😂\n\nAnd therefore as a stranger give it welcome.\n\n\nHow is’t, my noble lord?\n\n❤️\n\nO, wonderful!\n\n😂\n🎭"
+  },
+  {
+    "objectID": "example.html#hamlet-delayed-reactions",
+    "href": "example.html#hamlet-delayed-reactions",
+    "title": "quarto-revealjs-chat-bubbles",
+    "section": "Hamlet — Delayed Reactions",
+    "text": "Hamlet — Delayed Reactions\nHamlet · Horatio · Marcellus\n\n\nThere are more things in heaven and earth, Horatio, than are dreamt of in your philosophy.\n\n\nO day and night, but this is wondrous strange!\n\n😮\n❤️\n\nAnd therefore as a stranger give it welcome.\n\n\nHow is’t, my noble lord?"
+  },
+  {
+    "objectID": "example.html#typing-indicator-demo",
+    "href": "example.html#typing-indicator-demo",
+    "title": "quarto-revealjs-chat-bubbles",
+    "section": "Typing Indicator Demo",
+    "text": "Typing Indicator Demo\nRomeo · Juliet\n\n\nWherefore art thou?\n\n\nI’ve been here all along beneath thy window.\n\n\nThen why didst thou not speak sooner?\n\n\nI was composing the perfect words."
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "quarto-revealjs-chat-bubbles",
@@ -56,24 +77,17 @@
     "text": "Group chats\nUse all four classes together for multi-person conversations:\n::: {.chat}\n::: {.bubble-right}\nAlright who's bringing what to the potluck?\n:::\n\n::: {.fragment .bubble-left}\nI can do dessert\n:::\n\n::: {.fragment .bubble-left-2}\nI'll bring drinks\n:::\n\n::: {.fragment .bubble-left-3}\nCan I just bring chips\n:::\n:::"
   },
   {
+    "objectID": "index.html#typing-indicator",
+    "href": "index.html#typing-indicator",
+    "title": "quarto-revealjs-chat-bubbles",
+    "section": "Typing indicator",
+    "text": "Typing indicator\nAdd .typing to any .fragment bubble for a two-step reveal: the first keypress shows an animated three-dot typing indicator, and the next keypress expands the bubble and reveals the message text.\n::: {.chat}\n::: {.bubble-right}\nAre you still there?\n:::\n\n::: {.fragment .bubble-left .typing}\nSorry, was typing a really long reply.\n:::\n:::"
+  },
+  {
     "objectID": "index.html#customizing-colors",
     "href": "index.html#customizing-colors",
     "title": "quarto-revealjs-chat-bubbles",
     "section": "Customizing colors",
     "text": "Customizing colors\nOverride the CSS custom properties in your own stylesheet:\n:root {\n  --bubble-blue:   #FF3B30;  /* sender bubble   */\n  --bubble-gray:   #E9E9EB;  /* first receiver  */\n  --bubble-green:  #34C759;  /* second receiver */\n  --bubble-purple: #AF52DE;  /* third receiver  */\n}"
-  },
-  {
-    "objectID": "example.html#hamlet-reactions-demo",
-    "href": "example.html#hamlet-reactions-demo",
-    "title": "quarto-revealjs-chat-bubbles",
-    "section": "Hamlet — Reactions Demo",
-    "text": "Hamlet — Reactions Demo\nHamlet · Horatio · Marcellus\n\n\nThere are more things in heaven and earth, Horatio, than are dreamt of in your philosophy.\n\n😮\n👍\n\nO day and night, but this is wondrous strange!\n\n😂\n\nAnd therefore as a stranger give it welcome.\n\n\nHow is’t, my noble lord?\n\n❤️\n\nO, wonderful!\n\n😂\n🎭"
-  },
-  {
-    "objectID": "example.html#hamlet-delayed-reactions",
-    "href": "example.html#hamlet-delayed-reactions",
-    "title": "quarto-revealjs-chat-bubbles",
-    "section": "Hamlet — Delayed Reactions",
-    "text": "Hamlet — Delayed Reactions\nHamlet · Horatio · Marcellus\n\n\nThere are more things in heaven and earth, Horatio, than are dreamt of in your philosophy.\n\n\nO day and night, but this is wondrous strange!\n\n😮\n❤️\n\nAnd therefore as a stranger give it welcome.\n\n\nHow is’t, my noble lord?"
   }
 ]

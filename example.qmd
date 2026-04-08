@@ -192,3 +192,25 @@ And therefore as a stranger give it welcome.
 How is't, my noble lord?
 :::
 :::
+
+## Typing Indicator Demo
+
+*Romeo · Juliet*
+
+::: {.chat}
+::: {.bubble-right}
+Wherefore art thou?
+:::
+
+::: {.fragment .bubble-left .typing}
+I've been here all along beneath thy window.
+:::
+
+::: {.fragment .bubble-right .typing}
+Then why didst thou not speak sooner?
+:::
+
+::: {.fragment .bubble-left .typing}
+I was composing the perfect words.
+:::
+:::

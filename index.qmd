@@ -92,6 +92,24 @@ Can I just bring chips
 
 ---
 
+## Typing indicator
+
+Add `.typing` to any `.fragment` bubble for a two-step reveal: the first keypress shows an animated three-dot typing indicator, and the next keypress expands the bubble and reveals the message text.
+
+```markdown
+::: {.chat}
+::: {.bubble-right}
+Are you still there?
+:::
+
+::: {.fragment .bubble-left .typing}
+Sorry, was typing a really long reply.
+:::
+:::
+```
+
+---
+
 ## Customizing colors
 
 Override the CSS custom properties in your own stylesheet:
