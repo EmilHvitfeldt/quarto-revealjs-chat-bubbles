@@ -270,6 +270,47 @@
 </div>
 </div>
 </section>
+<section id="plot-output-demo" class="slide level2">
+<h2>Plot Output Demo</h2>
+<p><em>Analyst · Colleague</em></p>
+<div class="chat">
+<div class="bubble-left">
+<p>Can you show me the displacement vs.&nbsp;fuel economy relationship?</p>
+</div>
+<div class="fragment bubble-right">
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="example_files/figure-revealjs/unnamed-chunk-1-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment bubble-left">
+<p>Clear negative relationship — bigger engines, worse mileage.</p>
+</div>
+</div>
+</section>
+<section id="image-bubbles-demo" class="slide level2">
+<h2>Image Bubbles Demo</h2>
+<p><em>Romeo · Juliet</em></p>
+<div class="chat">
+<div class="bubble-right">
+<p>How dost thou fare this fine morning?</p>
+</div>
+<div class="fragment bubble-left">
+<p><img data-src="giphy.gif"></p>
+</div>
+<div class="fragment bubble-right">
+<p>Ha! I see thou art in good spirits.</p>
+</div>
+<div class="fragment bubble-left">
+<p>Always, when I think of thee.</p>
+</div>
+</div>
+</section>
 <section id="typing-indicator-demo" class="slide level2">
 <h2>Typing Indicator Demo</h2>
 <p><em>Romeo · Juliet</em></p>
@@ -506,6 +547,44 @@
         ]
       });
     </script>
+    
+    <script>
+      // htmlwidgets need to know to resize themselves when slides are shown/hidden.
+      // Fire the "slideenter" event (handled by htmlwidgets.js) when the current
+      // slide changes (different for each slide format).
+      (function () {
+        // dispatch for htmlwidgets
+        function fireSlideEnter() {
+          const event = window.document.createEvent("Event");
+          event.initEvent("slideenter", true, true);
+          window.document.dispatchEvent(event);
+        }
+
+        function fireSlideChanged(previousSlide, currentSlide) {
+          fireSlideEnter();
+
+          // dispatch for shiny
+          if (window.jQuery) {
+            if (previousSlide) {
+              window.jQuery(previousSlide).trigger("hidden");
+            }
+            if (currentSlide) {
+              window.jQuery(currentSlide).trigger("shown");
+            }
+          }
+        }
+
+        // hookup for slidy
+        if (window.w3c_slidy) {
+          window.w3c_slidy.add_observer(function (slide_num) {
+            // slide_num starts at position 1
+            fireSlideChanged(null, w3c_slidy.slides[slide_num - 1]);
+          });
+        }
+
+      })();
+    </script>
+
     <script id="quarto-html-after-body" type="application/javascript">
       window.document.addEventListener("DOMContentLoaded", function (event) {
         const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")

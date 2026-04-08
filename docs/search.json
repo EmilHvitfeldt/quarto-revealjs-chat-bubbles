@@ -89,5 +89,26 @@
     "title": "quarto-revealjs-chat-bubbles",
     "section": "Customizing colors",
     "text": "Customizing colors\nOverride the CSS custom properties in your own stylesheet:\n:root {\n  --bubble-blue:   #FF3B30;  /* sender bubble   */\n  --bubble-gray:   #E9E9EB;  /* first receiver  */\n  --bubble-green:  #34C759;  /* second receiver */\n  --bubble-purple: #AF52DE;  /* third receiver  */\n}"
+  },
+  {
+    "objectID": "example.html#image-bubbles-demo",
+    "href": "example.html#image-bubbles-demo",
+    "title": "quarto-revealjs-chat-bubbles",
+    "section": "Image Bubbles Demo",
+    "text": "Image Bubbles Demo\nRomeo · Juliet\n\n\nHow dost thou fare this fine morning?\n\n\n\n\n\nHa! I see thou art in good spirits.\n\n\nAlways, when I think of thee."
+  },
+  {
+    "objectID": "example.html#plot-output-demo",
+    "href": "example.html#plot-output-demo",
+    "title": "quarto-revealjs-chat-bubbles",
+    "section": "Plot Output Demo",
+    "text": "Plot Output Demo\nAnalyst · Colleague\n\n\nCan you show me the displacement vs. fuel economy relationship?\n\n\n\n\n\n\n\n\n\n\n\n\n\nClear negative relationship — bigger engines, worse mileage."
+  },
+  {
+    "objectID": "index.html#images-and-plots",
+    "href": "index.html#images-and-plots",
+    "title": "quarto-revealjs-chat-bubbles",
+    "section": "Images and plots",
+    "text": "Images and plots\nBubbles can contain images or R/Python plot output — just place them inside the bubble div as usual:\n::: {.chat}\n::: {.bubble-right}\n![](photo.gif)\n:::\n\n::: {.fragment .bubble-left}\nHaha love it\n:::\n:::\nCode chunk output works the same way:\n::: {.chat}\n::: {.bubble-left}\nCan you show me that plot?\n:::\n\n::: {.fragment .bubble-right}\n```{r}\nplot(mpg ~ disp, data = mtcars)\n```\n:::\n:::"
   }
 ]

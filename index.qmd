@@ -110,6 +110,40 @@ Sorry, was typing a really long reply.
 
 ---
 
+## Images and plots
+
+Bubbles can contain images or R/Python plot output — just place them inside the bubble div as usual:
+
+````markdown
+::: {.chat}
+::: {.bubble-right}
+![](photo.gif)
+:::
+
+::: {.fragment .bubble-left}
+Haha love it
+:::
+:::
+````
+
+Code chunk output works the same way:
+
+````markdown
+::: {.chat}
+::: {.bubble-left}
+Can you show me that plot?
+:::
+
+::: {.fragment .bubble-right}
+```{{r}}
+plot(mpg ~ disp, data = mtcars)
+```
+:::
+:::
+````
+
+---
+
 ## Customizing colors
 
 Override the CSS custom properties in your own stylesheet:

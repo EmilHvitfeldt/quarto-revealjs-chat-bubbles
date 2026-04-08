@@ -193,6 +193,48 @@ How is't, my noble lord?
 :::
 :::
 
+## Plot Output Demo
+
+*Analyst · Colleague*
+
+::: {.chat}
+::: {.bubble-left}
+Can you show me the displacement vs. fuel economy relationship?
+:::
+
+::: {.fragment .bubble-right}
+```{r}
+plot(mpg ~ disp, data = mtcars)
+```
+:::
+
+::: {.fragment .bubble-left}
+Clear negative relationship — bigger engines, worse mileage.
+:::
+:::
+
+## Image Bubbles Demo
+
+*Romeo · Juliet*
+
+::: {.chat}
+::: {.bubble-right}
+How dost thou fare this fine morning?
+:::
+
+::: {.fragment .bubble-left}
+![](giphy.gif)
+:::
+
+::: {.fragment .bubble-right}
+Ha! I see thou art in good spirits.
+:::
+
+::: {.fragment .bubble-left}
+Always, when I think of thee.
+:::
+:::
+
 ## Typing Indicator Demo
 
 *Romeo · Juliet*
