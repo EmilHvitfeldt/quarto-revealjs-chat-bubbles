@@ -2,6 +2,8 @@
 
 A Quarto extension that adds iOS-style chat bubbles to Reveal.js presentations. Messages can be revealed one at a time using Quarto fragments, and long conversations automatically scroll to keep the latest message visible.
 
+![](chat-bubbles.webp)
+
 ## Installation
 
 ```bash
