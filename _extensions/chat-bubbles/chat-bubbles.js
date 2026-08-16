@@ -3,10 +3,107 @@ window.RevealChatBubbles = function () {
     id: "RevealChatBubbles",
     init: function (deck) {
 
-      const bubbleClasses = ['bubble-right', 'bubble-left', 'bubble-left-2', 'bubble-left-3'];
+      const SLOT_COUNT = 4;
+
+      // Legacy authoring classes, kept as aliases for the canonical .speaker-N.
+      // These are read here and nowhere else: all styling hangs off data-slot,
+      // so themes never need to know that either vocabulary exists.
+      const legacySlots = {
+        'bubble-right': 1,
+        'bubble-left': 2,
+        'bubble-left-2': 3,
+        'bubble-left-3': 4
+      };
+
+      function slotOf(el) {
+        for (let i = 1; i <= SLOT_COUNT; i++) {
+          if (el.classList.contains(`speaker-${i}`)) return i;
+        }
+        for (const cls in legacySlots) {
+          if (el.classList.contains(cls)) return legacySlots[cls];
+        }
+        return null;
+      }
+
+      // Quarto rewrites non-standard attributes on a div to a data- prefix,
+      // so `theme="slack"` reaches the DOM as data-theme. Accept both spellings.
+      function attr(el, name) {
+        return el.getAttribute(name) || el.getAttribute('data-' + name);
+      }
+
+      function splitList(value) {
+        return (value || '').split(',').map(s => s.trim());
+      }
+
+      // Every message gets the same scaffolding regardless of theme, so that a
+      // theme is a CSS-only addition. Themes that want no avatar simply hide it.
+      function scaffold(el, name, avatarUrl) {
+        const text = document.createElement('div');
+        text.className = 'bubble-text';
+        while (el.firstChild) text.appendChild(el.firstChild);
+
+        const avatar = document.createElement('span');
+        avatar.className = 'bubble-avatar';
+        avatar.setAttribute('aria-hidden', 'true');
+        if (avatarUrl) {
+          avatar.style.backgroundImage = `url("${avatarUrl}")`;
+          avatar.classList.add('has-image');
+        } else if (name) {
+          avatar.textContent = Array.from(name)[0].toUpperCase();
+        }
+
+        const label = document.createElement('span');
+        label.className = 'bubble-name';
+        if (name) label.textContent = name;
+
+        const reactions = document.createElement('div');
+        reactions.className = 'bubble-reactions';
+
+        // Order matters only as a grid source order; themes place these by area.
+        el.append(avatar, label, text, reactions);
+      }
+
+      // Normalize authoring markup into the canonical attributes the CSS targets.
+      // Runs synchronously from init() rather than on 'ready': Reveal keeps slides
+      // hidden until it is ready, so doing this early avoids a flash of unstyled
+      // messages in the window before the attributes exist.
+      function normalizeChat(chat) {
+        const self = parseInt(attr(chat, 'self')) || 1;
+        chat.dataset.selfSlot = self;
+
+        // Copied through without a registry of known themes, so adding a theme
+        // stays a CSS-only change. Normalizing to a data attribute (rather than
+        // styling `theme` directly) keeps the default theme a plain value
+        // instead of a chain of :not() negations that grows with each theme.
+        chat.dataset.chatTheme = attr(chat, 'theme') || 'imessage';
+
+        // Roster maps positionally onto slots: names="a,b,c" -> slots 1,2,3
+        const names = splitList(attr(chat, 'names'));
+        const avatars = splitList(attr(chat, 'avatars'));
+
+        let previousSlot = null;
+        Array.from(chat.children).forEach(el => {
+          const slot = slotOf(el);
+          if (slot === null) return;
+          el.dataset.slot = slot;
+          // Which slot sits on the "sender" side is a property of the conversation,
+          // not of the class name, so alternating themes read this rather than
+          // inferring a side from the slot number.
+          if (slot === self) el.dataset.self = '';
+
+          const name = attr(el, 'name') || names[slot - 1] || '';
+          if (name) el.dataset.speaker = name;
+
+          // Computed for every theme; only the flat ones act on it.
+          if (slot === previousSlot) el.dataset.continues = '';
+          previousSlot = slot;
+
+          scaffold(el, name, avatars[slot - 1]);
+        });
+      }
 
       function isBubble(el) {
-        return bubbleClasses.some(cls => el.classList.contains(cls));
+        return el.dataset.slot !== undefined;
       }
 
       function isReaction(el) {
@@ -110,6 +207,8 @@ window.RevealChatBubbles = function () {
 
       const buffer = 150;
 
+      document.querySelectorAll('.chat').forEach(normalizeChat);
+
       deck.on('ready', () => {
         let hasTypingBubbles = false;
 
@@ -143,12 +242,7 @@ window.RevealChatBubbles = function () {
             if (!preceding) return;
 
             reaction.dataset.targetBubble = preceding.dataset.bubbleId;
-            if (!preceding.querySelector('.bubble-reactions')) {
-              const container = document.createElement('div');
-              container.className = 'bubble-reactions';
-              preceding.appendChild(container);
-              preceding.classList.add('has-reactions');
-            }
+            preceding.classList.add('has-reactions');
           });
 
           // Process typing bubbles: insert an invisible reveal-trigger fragment after each
@@ -170,10 +264,17 @@ window.RevealChatBubbles = function () {
               if (idx > currentIdx) frag.dataset.fragmentIndex = idx + 1;
             });
 
-            // Wrap bubble content so we can hide/show independently
-            bubble.innerHTML =
-              `<div class="bubble-text">${bubble.innerHTML}</div>` +
-              `<span class="typing-indicator"><span></span><span></span><span></span></span>`;
+            // .bubble-text already wraps the content from scaffold(), so the
+            // indicator is inserted alongside it rather than rebuilding innerHTML
+            // (which would destroy the avatar, name, and reactions container).
+            const indicator = document.createElement('span');
+            indicator.className = 'typing-indicator';
+            indicator.append(
+              document.createElement('span'),
+              document.createElement('span'),
+              document.createElement('span')
+            );
+            bubble.querySelector('.bubble-text').insertAdjacentElement('afterend', indicator);
             bubble.classList.add('is-typing');
 
             // Insert an invisible fragment that acts as the "reveal text" trigger

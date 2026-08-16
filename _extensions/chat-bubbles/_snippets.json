@@ -2,50 +2,56 @@
   "Chat Conversation": {
     "prefix": "chat",
     "body": [
-      "::: {.chat}",
-      "::: {.bubble-right}",
-      "${1:Message}",
+      "::: {.chat names=\"${1:Alice,Bob}\"}",
+      "::: {.speaker-1}",
+      "${2:Message}",
       ":::",
       "",
-      "::: {.fragment .bubble-left}",
-      "${2:Reply}",
+      "::: {.fragment .speaker-2}",
+      "${3:Reply}",
       ":::",
       ":::"
     ],
-    "description": "Insert a basic two-bubble chat conversation."
+    "description": "Insert a basic two-speaker chat conversation."
   },
-  "Chat Bubble Right": {
-    "prefix": "chat-right",
+  "Chat Conversation (themed)": {
+    "prefix": "chat-theme",
     "body": [
-      "::: {.fragment .bubble-right}",
-      "${1:Message}",
+      "::: {.chat theme=\"${1|imessage,slack,discord,teams|}\" names=\"${2:Alice,Bob}\"}",
+      "::: {.speaker-1}",
+      "${3:Message}",
+      ":::",
+      "",
+      "::: {.fragment .speaker-2}",
+      "${4:Reply}",
+      ":::",
       ":::"
     ],
-    "description": "Insert a right-aligned chat bubble fragment."
+    "description": "Insert a chat conversation using a specific platform theme."
   },
-  "Chat Bubble Left": {
-    "prefix": "chat-left",
+  "Chat Message": {
+    "prefix": "chat-message",
     "body": [
-      "::: {.fragment .bubble-left}",
-      "${1:Message}",
-      ":::"
-    ],
-    "description": "Insert a left-aligned chat bubble fragment."
-  },
-  "Chat Typing Bubble": {
-    "prefix": "chat-typing",
-    "body": [
-      "::: {.fragment .bubble-${1|right,left,left-2,left-3|} .typing}",
+      "::: {.fragment .speaker-${1|1,2,3,4|}}",
       "${2:Message}",
       ":::"
     ],
-    "description": "Insert a chat bubble with typing indicator animation."
+    "description": "Insert a chat message fragment for a given speaker slot."
+  },
+  "Chat Typing Message": {
+    "prefix": "chat-typing",
+    "body": [
+      "::: {.fragment .speaker-${1|1,2,3,4|} .typing}",
+      "${2:Message}",
+      ":::"
+    ],
+    "description": "Insert a chat message with typing indicator animation."
   },
   "Chat Reaction": {
     "prefix": "chat-reaction",
     "body": [
       "[${1:👍}]{.fragment .reaction}"
     ],
-    "description": "Insert an emoji reaction attached to the preceding bubble."
+    "description": "Insert an emoji reaction attached to the preceding message."
   }
 }
