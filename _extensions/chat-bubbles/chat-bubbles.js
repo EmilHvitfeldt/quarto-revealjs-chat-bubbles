@@ -117,8 +117,10 @@ window.RevealChatBubbles = function () {
       // Animate a typing bubble between its two states (dots ↔ text).
       // Text stays invisible (opacity:0) during the size animation and fades in
       // only after the bubble reaches full size.
-      // Returns the end height (useful for scroll calculations).
-      function animateBubble(bubble, toTextRevealed) {
+      // Returns the end height (useful for scroll calculations); `onSettled` runs
+      // once the bubble has actually reached that height, which is when the
+      // container's scrollHeight finally reflects it.
+      function animateBubble(bubble, toTextRevealed, onSettled) {
         // Cancel any in-progress animation on this bubble
         if (bubble._animCancel) bubble._animCancel();
 
@@ -146,6 +148,7 @@ window.RevealChatBubbles = function () {
         if (from.w === to.w && from.h === to.h) {
           // No size change — just fade the text in immediately
           if (toTextRevealed && textEl) fadeInText(textEl);
+          if (onSettled) onSettled();
           return to.h;
         }
 
@@ -177,6 +180,7 @@ window.RevealChatBubbles = function () {
           bubble.style.maxHeight = '';
           bubble.style.transition = '';
           if (toTextRevealed && textEl) fadeInText(textEl);
+          if (onSettled) onSettled();
         }
 
         bubble.addEventListener('transitionend', onEnd);
@@ -206,6 +210,45 @@ window.RevealChatBubbles = function () {
       }
 
       const buffer = 150;
+
+      // Single source of truth for "keep this message in view". Everything that
+      // can change the height of the transcript — a bubble appearing, a typing
+      // bubble expanding, a reaction opening a row, an image finishing its
+      // decode — routes through here so the rules stay identical.
+      //
+      // `knownHeight` exists for callers that are mid-animation, where the
+      // bubble's measured height is the *start* of a transition rather than
+      // where it will end up.
+      function scrollBubbleIntoView(chat, bubble, knownHeight) {
+        const height = knownHeight === undefined ? bubble.offsetHeight : knownHeight;
+        const bubbleBottom = bubble.offsetTop + height;
+        const visibleBottom = chat.scrollTop + chat.clientHeight - buffer;
+        if (bubbleBottom > visibleBottom) {
+          chat.scrollTo({ top: bubbleBottom - chat.clientHeight + buffer, behavior: 'smooth' });
+        }
+      }
+
+      // The mirror of the above, for stepping backwards.
+      function scrollBubbleOutOfView(chat, bubble) {
+        const targetTop = Math.max(0, bubble.offsetTop - chat.clientHeight);
+        if (chat.scrollTop > targetTop) {
+          chat.scrollTo({ top: targetTop, behavior: 'smooth' });
+        }
+      }
+
+      // Images inside a message carry no intrinsic size in this layout, so a
+      // bubble revealed before its image has decoded measures short and the
+      // scroll undershoots by the full height of the image. Re-run the scroll
+      // once each outstanding image settles. Listeners are one-shot, so a
+      // bubble revisited later costs nothing.
+      function rescrollOnImageLoad(chat, bubble) {
+        bubble.querySelectorAll('img').forEach(img => {
+          if (img.complete) return;
+          const again = () => scrollBubbleIntoView(chat, bubble);
+          img.addEventListener('load', again, { once: true });
+          img.addEventListener('error', again, { once: true });
+        });
+      }
 
       document.querySelectorAll('.chat').forEach(normalizeChat);
 
@@ -304,28 +347,31 @@ window.RevealChatBubbles = function () {
           pill.textContent = fragment.textContent.trim();
           fragment._reactionPill = pill;
           bubble.querySelector('.bubble-reactions').appendChild(pill);
+          // `has-reactions` is set during setup, so the room for one row of pills
+          // is already reserved and the usual case costs no height. Pills that
+          // wrap onto a second row do grow the message, so re-assert the anchor.
+          scrollBubbleIntoView(chat, bubble);
           return;
         }
 
         if (isTypingReveal(fragment)) {
           const bubble = chat.querySelector(`[data-bubble-id="${fragment.dataset.targetTypingBubble}"]`);
           if (!bubble) return;
-          const endHeight = animateBubble(bubble, true);
-          // Scroll using the known end height (bubble.offsetHeight is mid-animation)
-          const fragBottom = bubble.offsetTop + endHeight;
-          const visibleBottom = chat.scrollTop + chat.clientHeight - buffer;
-          if (fragBottom > visibleBottom) {
-            chat.scrollTo({ top: fragBottom - chat.clientHeight + buffer, behavior: 'smooth' });
-          }
+          // Scroll twice: once optimistically with the known end height so the
+          // motion runs alongside the expansion, and once after it settles.
+          // The first scroll is clamped by a scrollHeight that does not yet
+          // include the growth, so on tall reveals it lands short on its own.
+          const endHeight = animateBubble(bubble, true, () => {
+            scrollBubbleIntoView(chat, bubble);
+            rescrollOnImageLoad(chat, bubble);
+          });
+          scrollBubbleIntoView(chat, bubble, endHeight);
           return;
         }
 
         if (!isBubble(fragment)) return;
-        const fragBottom = fragment.offsetTop + fragment.offsetHeight;
-        const visibleBottom = chat.scrollTop + chat.clientHeight - buffer;
-        if (fragBottom > visibleBottom) {
-          chat.scrollTo({ top: fragBottom - chat.clientHeight + buffer, behavior: 'smooth' });
-        }
+        scrollBubbleIntoView(chat, fragment);
+        rescrollOnImageLoad(chat, fragment);
       });
 
       deck.on('fragmenthidden', (event) => {
@@ -346,15 +392,15 @@ window.RevealChatBubbles = function () {
         if (isTypingReveal(fragment)) {
           const bubble = chat.querySelector(`[data-bubble-id="${fragment.dataset.targetTypingBubble}"]`);
           if (!bubble) return;
-          animateBubble(bubble, false);
+          // Collapsing back to dots shrinks the transcript; re-assert the anchor
+          // afterwards so the dots sit where the text did rather than wherever
+          // the browser's own scrollTop clamping leaves them.
+          animateBubble(bubble, false, () => scrollBubbleIntoView(chat, bubble));
           return;
         }
 
         if (!isBubble(fragment)) return;
-        const targetTop = Math.max(0, fragment.offsetTop - chat.clientHeight);
-        if (chat.scrollTop > targetTop) {
-          chat.scrollTo({ top: targetTop, behavior: 'smooth' });
-        }
+        scrollBubbleOutOfView(chat, fragment);
       });
 
     }
