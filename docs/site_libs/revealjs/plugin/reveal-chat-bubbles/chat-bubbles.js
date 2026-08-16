@@ -3,10 +3,107 @@ window.RevealChatBubbles = function () {
     id: "RevealChatBubbles",
     init: function (deck) {
 
-      const bubbleClasses = ['bubble-right', 'bubble-left', 'bubble-left-2', 'bubble-left-3'];
+      const SLOT_COUNT = 4;
+
+      // Legacy authoring classes, kept as aliases for the canonical .speaker-N.
+      // These are read here and nowhere else: all styling hangs off data-slot,
+      // so themes never need to know that either vocabulary exists.
+      const legacySlots = {
+        'bubble-right': 1,
+        'bubble-left': 2,
+        'bubble-left-2': 3,
+        'bubble-left-3': 4
+      };
+
+      function slotOf(el) {
+        for (let i = 1; i <= SLOT_COUNT; i++) {
+          if (el.classList.contains(`speaker-${i}`)) return i;
+        }
+        for (const cls in legacySlots) {
+          if (el.classList.contains(cls)) return legacySlots[cls];
+        }
+        return null;
+      }
+
+      // Quarto rewrites non-standard attributes on a div to a data- prefix,
+      // so `theme="slack"` reaches the DOM as data-theme. Accept both spellings.
+      function attr(el, name) {
+        return el.getAttribute(name) || el.getAttribute('data-' + name);
+      }
+
+      function splitList(value) {
+        return (value || '').split(',').map(s => s.trim());
+      }
+
+      // Every message gets the same scaffolding regardless of theme, so that a
+      // theme is a CSS-only addition. Themes that want no avatar simply hide it.
+      function scaffold(el, name, avatarUrl) {
+        const text = document.createElement('div');
+        text.className = 'bubble-text';
+        while (el.firstChild) text.appendChild(el.firstChild);
+
+        const avatar = document.createElement('span');
+        avatar.className = 'bubble-avatar';
+        avatar.setAttribute('aria-hidden', 'true');
+        if (avatarUrl) {
+          avatar.style.backgroundImage = `url("${avatarUrl}")`;
+          avatar.classList.add('has-image');
+        } else if (name) {
+          avatar.textContent = Array.from(name)[0].toUpperCase();
+        }
+
+        const label = document.createElement('span');
+        label.className = 'bubble-name';
+        if (name) label.textContent = name;
+
+        const reactions = document.createElement('div');
+        reactions.className = 'bubble-reactions';
+
+        // Order matters only as a grid source order; themes place these by area.
+        el.append(avatar, label, text, reactions);
+      }
+
+      // Normalize authoring markup into the canonical attributes the CSS targets.
+      // Runs synchronously from init() rather than on 'ready': Reveal keeps slides
+      // hidden until it is ready, so doing this early avoids a flash of unstyled
+      // messages in the window before the attributes exist.
+      function normalizeChat(chat) {
+        const self = parseInt(attr(chat, 'self')) || 1;
+        chat.dataset.selfSlot = self;
+
+        // Copied through without a registry of known themes, so adding a theme
+        // stays a CSS-only change. Normalizing to a data attribute (rather than
+        // styling `theme` directly) keeps the default theme a plain value
+        // instead of a chain of :not() negations that grows with each theme.
+        chat.dataset.chatTheme = attr(chat, 'theme') || 'imessage';
+
+        // Roster maps positionally onto slots: names="a,b,c" -> slots 1,2,3
+        const names = splitList(attr(chat, 'names'));
+        const avatars = splitList(attr(chat, 'avatars'));
+
+        let previousSlot = null;
+        Array.from(chat.children).forEach(el => {
+          const slot = slotOf(el);
+          if (slot === null) return;
+          el.dataset.slot = slot;
+          // Which slot sits on the "sender" side is a property of the conversation,
+          // not of the class name, so alternating themes read this rather than
+          // inferring a side from the slot number.
+          if (slot === self) el.dataset.self = '';
+
+          const name = attr(el, 'name') || names[slot - 1] || '';
+          if (name) el.dataset.speaker = name;
+
+          // Computed for every theme; only the flat ones act on it.
+          if (slot === previousSlot) el.dataset.continues = '';
+          previousSlot = slot;
+
+          scaffold(el, name, avatars[slot - 1]);
+        });
+      }
 
       function isBubble(el) {
-        return bubbleClasses.some(cls => el.classList.contains(cls));
+        return el.dataset.slot !== undefined;
       }
 
       function isReaction(el) {
@@ -20,8 +117,10 @@ window.RevealChatBubbles = function () {
       // Animate a typing bubble between its two states (dots ↔ text).
       // Text stays invisible (opacity:0) during the size animation and fades in
       // only after the bubble reaches full size.
-      // Returns the end height (useful for scroll calculations).
-      function animateBubble(bubble, toTextRevealed) {
+      // Returns the end height (useful for scroll calculations); `onSettled` runs
+      // once the bubble has actually reached that height, which is when the
+      // container's scrollHeight finally reflects it.
+      function animateBubble(bubble, toTextRevealed, onSettled) {
         // Cancel any in-progress animation on this bubble
         if (bubble._animCancel) bubble._animCancel();
 
@@ -49,6 +148,7 @@ window.RevealChatBubbles = function () {
         if (from.w === to.w && from.h === to.h) {
           // No size change — just fade the text in immediately
           if (toTextRevealed && textEl) fadeInText(textEl);
+          if (onSettled) onSettled();
           return to.h;
         }
 
@@ -80,6 +180,7 @@ window.RevealChatBubbles = function () {
           bubble.style.maxHeight = '';
           bubble.style.transition = '';
           if (toTextRevealed && textEl) fadeInText(textEl);
+          if (onSettled) onSettled();
         }
 
         bubble.addEventListener('transitionend', onEnd);
@@ -109,6 +210,47 @@ window.RevealChatBubbles = function () {
       }
 
       const buffer = 150;
+
+      // Single source of truth for "keep this message in view". Everything that
+      // can change the height of the transcript — a bubble appearing, a typing
+      // bubble expanding, a reaction opening a row, an image finishing its
+      // decode — routes through here so the rules stay identical.
+      //
+      // `knownHeight` exists for callers that are mid-animation, where the
+      // bubble's measured height is the *start* of a transition rather than
+      // where it will end up.
+      function scrollBubbleIntoView(chat, bubble, knownHeight) {
+        const height = knownHeight === undefined ? bubble.offsetHeight : knownHeight;
+        const bubbleBottom = bubble.offsetTop + height;
+        const visibleBottom = chat.scrollTop + chat.clientHeight - buffer;
+        if (bubbleBottom > visibleBottom) {
+          chat.scrollTo({ top: bubbleBottom - chat.clientHeight + buffer, behavior: 'smooth' });
+        }
+      }
+
+      // The mirror of the above, for stepping backwards.
+      function scrollBubbleOutOfView(chat, bubble) {
+        const targetTop = Math.max(0, bubble.offsetTop - chat.clientHeight);
+        if (chat.scrollTop > targetTop) {
+          chat.scrollTo({ top: targetTop, behavior: 'smooth' });
+        }
+      }
+
+      // Images inside a message carry no intrinsic size in this layout, so a
+      // bubble revealed before its image has decoded measures short and the
+      // scroll undershoots by the full height of the image. Re-run the scroll
+      // once each outstanding image settles. Listeners are one-shot, so a
+      // bubble revisited later costs nothing.
+      function rescrollOnImageLoad(chat, bubble) {
+        bubble.querySelectorAll('img').forEach(img => {
+          if (img.complete) return;
+          const again = () => scrollBubbleIntoView(chat, bubble);
+          img.addEventListener('load', again, { once: true });
+          img.addEventListener('error', again, { once: true });
+        });
+      }
+
+      document.querySelectorAll('.chat').forEach(normalizeChat);
 
       deck.on('ready', () => {
         let hasTypingBubbles = false;
@@ -143,12 +285,7 @@ window.RevealChatBubbles = function () {
             if (!preceding) return;
 
             reaction.dataset.targetBubble = preceding.dataset.bubbleId;
-            if (!preceding.querySelector('.bubble-reactions')) {
-              const container = document.createElement('div');
-              container.className = 'bubble-reactions';
-              preceding.appendChild(container);
-              preceding.classList.add('has-reactions');
-            }
+            preceding.classList.add('has-reactions');
           });
 
           // Process typing bubbles: insert an invisible reveal-trigger fragment after each
@@ -170,10 +307,17 @@ window.RevealChatBubbles = function () {
               if (idx > currentIdx) frag.dataset.fragmentIndex = idx + 1;
             });
 
-            // Wrap bubble content so we can hide/show independently
-            bubble.innerHTML =
-              `<div class="bubble-text">${bubble.innerHTML}</div>` +
-              `<span class="typing-indicator"><span></span><span></span><span></span></span>`;
+            // .bubble-text already wraps the content from scaffold(), so the
+            // indicator is inserted alongside it rather than rebuilding innerHTML
+            // (which would destroy the avatar, name, and reactions container).
+            const indicator = document.createElement('span');
+            indicator.className = 'typing-indicator';
+            indicator.append(
+              document.createElement('span'),
+              document.createElement('span'),
+              document.createElement('span')
+            );
+            bubble.querySelector('.bubble-text').insertAdjacentElement('afterend', indicator);
             bubble.classList.add('is-typing');
 
             // Insert an invisible fragment that acts as the "reveal text" trigger
@@ -203,28 +347,31 @@ window.RevealChatBubbles = function () {
           pill.textContent = fragment.textContent.trim();
           fragment._reactionPill = pill;
           bubble.querySelector('.bubble-reactions').appendChild(pill);
+          // `has-reactions` is set during setup, so the room for one row of pills
+          // is already reserved and the usual case costs no height. Pills that
+          // wrap onto a second row do grow the message, so re-assert the anchor.
+          scrollBubbleIntoView(chat, bubble);
           return;
         }
 
         if (isTypingReveal(fragment)) {
           const bubble = chat.querySelector(`[data-bubble-id="${fragment.dataset.targetTypingBubble}"]`);
           if (!bubble) return;
-          const endHeight = animateBubble(bubble, true);
-          // Scroll using the known end height (bubble.offsetHeight is mid-animation)
-          const fragBottom = bubble.offsetTop + endHeight;
-          const visibleBottom = chat.scrollTop + chat.clientHeight - buffer;
-          if (fragBottom > visibleBottom) {
-            chat.scrollTo({ top: fragBottom - chat.clientHeight + buffer, behavior: 'smooth' });
-          }
+          // Scroll twice: once optimistically with the known end height so the
+          // motion runs alongside the expansion, and once after it settles.
+          // The first scroll is clamped by a scrollHeight that does not yet
+          // include the growth, so on tall reveals it lands short on its own.
+          const endHeight = animateBubble(bubble, true, () => {
+            scrollBubbleIntoView(chat, bubble);
+            rescrollOnImageLoad(chat, bubble);
+          });
+          scrollBubbleIntoView(chat, bubble, endHeight);
           return;
         }
 
         if (!isBubble(fragment)) return;
-        const fragBottom = fragment.offsetTop + fragment.offsetHeight;
-        const visibleBottom = chat.scrollTop + chat.clientHeight - buffer;
-        if (fragBottom > visibleBottom) {
-          chat.scrollTo({ top: fragBottom - chat.clientHeight + buffer, behavior: 'smooth' });
-        }
+        scrollBubbleIntoView(chat, fragment);
+        rescrollOnImageLoad(chat, fragment);
       });
 
       deck.on('fragmenthidden', (event) => {
@@ -245,15 +392,15 @@ window.RevealChatBubbles = function () {
         if (isTypingReveal(fragment)) {
           const bubble = chat.querySelector(`[data-bubble-id="${fragment.dataset.targetTypingBubble}"]`);
           if (!bubble) return;
-          animateBubble(bubble, false);
+          // Collapsing back to dots shrinks the transcript; re-assert the anchor
+          // afterwards so the dots sit where the text did rather than wherever
+          // the browser's own scrollTop clamping leaves them.
+          animateBubble(bubble, false, () => scrollBubbleIntoView(chat, bubble));
           return;
         }
 
         if (!isBubble(fragment)) return;
-        const targetTop = Math.max(0, fragment.offsetTop - chat.clientHeight);
-        if (chat.scrollTop > targetTop) {
-          chat.scrollTo({ top: targetTop, behavior: 'smooth' });
-        }
+        scrollBubbleOutOfView(chat, fragment);
       });
 
     }

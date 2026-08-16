@@ -35,6 +35,41 @@
     "text": "Hamlet — Delayed Reactions\nHamlet · Horatio · Marcellus\n\n\nThere are more things in heaven and earth, Horatio, than are dreamt of in your philosophy.\n\n\nO day and night, but this is wondrous strange!\n\n😮\n❤️\n\nAnd therefore as a stranger give it welcome.\n\n\nHow is’t, my noble lord?"
   },
   {
+    "objectID": "example.html#plot-output-demo",
+    "href": "example.html#plot-output-demo",
+    "title": "quarto-revealjs-chat-bubbles",
+    "section": "Plot Output Demo",
+    "text": "Plot Output Demo\nAnalyst · Colleague\n\n\nCan you show me the displacement vs. fuel economy relationship?\n\n\n\n\n\n\n\n\n\n\n\n\n\nClear negative relationship — bigger engines, worse mileage."
+  },
+  {
+    "objectID": "example.html#image-bubbles-demo",
+    "href": "example.html#image-bubbles-demo",
+    "title": "quarto-revealjs-chat-bubbles",
+    "section": "Image Bubbles Demo",
+    "text": "Image Bubbles Demo\nRomeo · Juliet\n\n\nHow dost thou fare this fine morning?\n\n\n\n\n\nHa! I see thou art in good spirits.\n\n\nAlways, when I think of thee."
+  },
+  {
+    "objectID": "example.html#slack-theme",
+    "href": "example.html#slack-theme",
+    "title": "quarto-revealjs-chat-bubbles",
+    "section": "Slack Theme",
+    "text": "Slack Theme\n\n\nI shall write a splendid book someday.\n\n\nFull of thrilling adventure and noble heroines.\n\n\nWe are proud of you now, Jo, but do try to speak properly.\n\n🎉\n\nWill there be any fashionable people in it?\n\n\nI should like to read it very much."
+  },
+  {
+    "objectID": "example.html#discord-theme",
+    "href": "example.html#discord-theme",
+    "title": "quarto-revealjs-chat-bubbles",
+    "section": "Discord Theme",
+    "text": "Discord Theme\n\n\nThere are more things in heaven and earth, Horatio.\n\n\nO day and night, but this is wondrous strange!\n\n😮\n\nHow is’t, my noble lord?\n\n\nAnd therefore as a stranger give it welcome.\n\n\nBut you’ll be secret?"
+  },
+  {
+    "objectID": "example.html#teams-theme",
+    "href": "example.html#teams-theme",
+    "title": "quarto-revealjs-chat-bubbles",
+    "section": "Teams Theme",
+    "text": "Teams Theme\n\n\nWherefore art thou, Romeo?\n\n\nHere, beneath thy window.\n\n\nI have been here some while.\n\n👀\n\nMadam, your mother calls for you.\n\n\nAnon, good nurse!"
+  },
+  {
     "objectID": "example.html#typing-indicator-demo",
     "href": "example.html#typing-indicator-demo",
     "title": "quarto-revealjs-chat-bubbles",
@@ -46,7 +81,7 @@
     "href": "index.html",
     "title": "quarto-revealjs-chat-bubbles",
     "section": "",
-    "text": "Add iMessage-style chat bubbles to your Quarto Reveal.js presentations. Messages appear one at a time as fragments, and long conversations scroll automatically to keep the latest message in view.\nGitHub"
+    "text": "Add chat conversations to your Quarto Reveal.js presentations, styled after iMessage, Slack, Discord, or Microsoft Teams. Messages appear one at a time as fragments, and long conversations scroll automatically to keep the latest message in view.\nGitHub"
   },
   {
     "objectID": "index.html#installation",
@@ -60,55 +95,48 @@
     "href": "index.html#usage",
     "title": "quarto-revealjs-chat-bubbles",
     "section": "Usage",
-    "text": "Usage\nEnable the plugin in your presentation front matter:\nformat:\n  revealjs: default\nrevealjs-plugins:\n  - chat-bubbles\nThen write a conversation using .chat and bubble classes. Add .fragment to any bubble you want to reveal on a keypress:\n::: {.chat}\n::: {.bubble-right}\nHey, are you coming tonight?\n:::\n\n::: {.fragment .bubble-left}\nYeah! What time does it start?\n:::\n\n::: {.fragment .bubble-right}\nDoors open at 7\n:::\n:::"
+    "text": "Usage\nEnable the plugin in your presentation front matter:\nformat:\n  revealjs: default\nrevealjs-plugins:\n  - chat-bubbles\nThen write a conversation using .chat and speaker classes. Add .fragment to any message you want to reveal on a keypress:\n::: {.chat}\n::: {.speaker-1}\nHey, are you coming tonight?\n:::\n\n::: {.fragment .speaker-2}\nYeah! What time does it start?\n:::\n\n::: {.fragment .speaker-1}\nDoors open at 7\n:::\n:::"
   },
   {
-    "objectID": "index.html#bubble-classes",
-    "href": "index.html#bubble-classes",
+    "objectID": "index.html#themes",
+    "href": "index.html#themes",
     "title": "quarto-revealjs-chat-bubbles",
-    "section": "Bubble classes",
-    "text": "Bubble classes\n\n\n\nClass\nSide\nColor\n\n\n\n\n.bubble-right\nRight\niMessage blue\n\n\n.bubble-left\nLeft\nLight gray\n\n\n.bubble-left-2\nLeft\nGreen\n\n\n.bubble-left-3\nLeft\nPurple\n\n\n\n.bubble-right is the “self” sender. Use .bubble-left variants for other participants — useful for group conversations with multiple speakers."
+    "section": "Themes",
+    "text": "Themes\nSet theme on the .chat container. Themes are per conversation, so one deck can mix platforms.\n\n\n\n\n\n\n\n\nTheme\nLayout\nLooks like\n\n\n\n\nimessage (default)\nAlternating sides, tailed bubbles\niOS Messages\n\n\nslack\nSingle column, avatar and name\nSlack\n\n\ndiscord\nSingle column, dark surface\nDiscord\n\n\nteams\nAlternating bubbles with avatars\nMicrosoft Teams\n\n\n\nThemes that show names need a roster. names maps positionally onto the speaker slots:\n::: {.chat theme=\"slack\" names=\"Jo,Meg,Amy\"}\n::: {.speaker-1}\nI shall write a splendid book someday.\n:::\n\n::: {.fragment .speaker-2}\nWe are proud of you now, Jo.\n:::\n\n::: {.fragment .speaker-3}\nWill there be any fashionable people in it?\n:::\n:::\nAvatars default to the speaker’s initial on a coloured background; pass avatars=\"a.png,b.png\" to use images instead. Consecutive messages from the same speaker are grouped automatically."
+  },
+  {
+    "objectID": "index.html#speaker-classes",
+    "href": "index.html#speaker-classes",
+    "title": "quarto-revealjs-chat-bubbles",
+    "section": "Speaker classes",
+    "text": "Speaker classes\n\n\n\nClass\nColor\n\n\n\n\n.speaker-1\nBlue\n\n\n.speaker-2\nGray (slate for avatars)\n\n\n.speaker-3\nGreen\n\n\n.speaker-4\nPurple\n\n\n\nWhat a slot looks like depends on the theme: in iMessage it decides the side and the bubble colour, in Slack and Discord it colours the avatar and name.\n.speaker-1 is the sender by default, which in the alternating themes is the person on the right. Point that at another slot with self=\"2\" on the container.\nThe original class names (.bubble-right, .bubble-left, .bubble-left-2, .bubble-left-3) still work and map to .speaker-1 through .speaker-4, so existing decks need no changes."
   },
   {
     "objectID": "index.html#group-chats",
     "href": "index.html#group-chats",
     "title": "quarto-revealjs-chat-bubbles",
     "section": "Group chats",
-    "text": "Group chats\nUse all four classes together for multi-person conversations:\n::: {.chat}\n::: {.bubble-right}\nAlright who's bringing what to the potluck?\n:::\n\n::: {.fragment .bubble-left}\nI can do dessert\n:::\n\n::: {.fragment .bubble-left-2}\nI'll bring drinks\n:::\n\n::: {.fragment .bubble-left-3}\nCan I just bring chips\n:::\n:::"
+    "text": "Group chats\nUse all four slots together for multi-person conversations:\n::: {.chat}\n::: {.speaker-1}\nAlright who's bringing what to the potluck?\n:::\n\n::: {.fragment .speaker-2}\nI can do dessert\n:::\n\n::: {.fragment .speaker-3}\nI'll bring drinks\n:::\n\n::: {.fragment .speaker-4}\nCan I just bring chips\n:::\n:::"
   },
   {
     "objectID": "index.html#typing-indicator",
     "href": "index.html#typing-indicator",
     "title": "quarto-revealjs-chat-bubbles",
     "section": "Typing indicator",
-    "text": "Typing indicator\nAdd .typing to any .fragment bubble for a two-step reveal: the first keypress shows an animated three-dot typing indicator, and the next keypress expands the bubble and reveals the message text.\n::: {.chat}\n::: {.bubble-right}\nAre you still there?\n:::\n\n::: {.fragment .bubble-left .typing}\nSorry, was typing a really long reply.\n:::\n:::"
-  },
-  {
-    "objectID": "index.html#customizing-colors",
-    "href": "index.html#customizing-colors",
-    "title": "quarto-revealjs-chat-bubbles",
-    "section": "Customizing colors",
-    "text": "Customizing colors\nOverride the CSS custom properties in your own stylesheet:\n:root {\n  --bubble-blue:   #FF3B30;  /* sender bubble   */\n  --bubble-gray:   #E9E9EB;  /* first receiver  */\n  --bubble-green:  #34C759;  /* second receiver */\n  --bubble-purple: #AF52DE;  /* third receiver  */\n}"
-  },
-  {
-    "objectID": "example.html#image-bubbles-demo",
-    "href": "example.html#image-bubbles-demo",
-    "title": "quarto-revealjs-chat-bubbles",
-    "section": "Image Bubbles Demo",
-    "text": "Image Bubbles Demo\nRomeo · Juliet\n\n\nHow dost thou fare this fine morning?\n\n\n\n\n\nHa! I see thou art in good spirits.\n\n\nAlways, when I think of thee."
-  },
-  {
-    "objectID": "example.html#plot-output-demo",
-    "href": "example.html#plot-output-demo",
-    "title": "quarto-revealjs-chat-bubbles",
-    "section": "Plot Output Demo",
-    "text": "Plot Output Demo\nAnalyst · Colleague\n\n\nCan you show me the displacement vs. fuel economy relationship?\n\n\n\n\n\n\n\n\n\n\n\n\n\nClear negative relationship — bigger engines, worse mileage."
+    "text": "Typing indicator\nAdd .typing to any .fragment message for a two-step reveal: the first keypress shows an animated three-dot typing indicator, and the next keypress expands the bubble and reveals the message text.\n::: {.chat}\n::: {.speaker-1}\nAre you still there?\n:::\n\n::: {.fragment .speaker-2 .typing}\nSorry, was typing a really long reply.\n:::\n:::"
   },
   {
     "objectID": "index.html#images-and-plots",
     "href": "index.html#images-and-plots",
     "title": "quarto-revealjs-chat-bubbles",
     "section": "Images and plots",
-    "text": "Images and plots\nBubbles can contain images or R/Python plot output — just place them inside the bubble div as usual:\n::: {.chat}\n::: {.bubble-right}\n![](photo.gif)\n:::\n\n::: {.fragment .bubble-left}\nHaha love it\n:::\n:::\nCode chunk output works the same way:\n::: {.chat}\n::: {.bubble-left}\nCan you show me that plot?\n:::\n\n::: {.fragment .bubble-right}\n```{r}\nplot(mpg ~ disp, data = mtcars)\n```\n:::\n:::"
+    "text": "Images and plots\nMessages can contain images or R/Python plot output. Place them inside the message div as usual:\n::: {.chat}\n::: {.speaker-1}\n![](photo.gif)\n:::\n\n::: {.fragment .speaker-2}\nHaha love it\n:::\n:::\nCode chunk output works the same way:\n::: {.chat}\n::: {.speaker-2}\nCan you show me that plot?\n:::\n\n::: {.fragment .speaker-1}\n```{r}\nplot(mpg ~ disp, data = mtcars)\n```\n:::\n:::"
+  },
+  {
+    "objectID": "index.html#customizing-colors",
+    "href": "index.html#customizing-colors",
+    "title": "quarto-revealjs-chat-bubbles",
+    "section": "Customizing colors",
+    "text": "Customizing colors\nOverride the CSS custom properties in your own stylesheet:\n:root {\n  --bubble-blue:   #FF3B30;  /* speaker 1 */\n  --bubble-gray:   #E9E9EB;  /* speaker 2 */\n  --bubble-green:  #34C759;  /* speaker 3 */\n  --bubble-purple: #AF52DE;  /* speaker 4 */\n\n  --bubble-slate:  #5A6B7B;  /* speaker 2's avatar and name */\n}\n--bubble-slate exists because speaker 2’s near-white default reads well as a bubble fill but disappears when the same colour has to fill a small avatar or colour a username."
   }
 ]
