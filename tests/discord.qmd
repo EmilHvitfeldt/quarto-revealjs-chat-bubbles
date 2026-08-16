@@ -1,0 +1,446 @@
+---
+format:
+  revealjs:
+    theme: default
+    width: 1280
+    height: 720
+pagetitle: "Chat Bubbles Test: Discord"
+echo: false
+code-line-numbers: false
+revealjs-plugins:
+  - chat-bubbles
+---
+
+## Discord: test suite {.smaller}
+
+Every feature the extension supports, rendered in the **discord** theme. Step through with the arrow keys and check each slide against the notes in `tests/README.md`. Backwards stepping matters as much as forwards: most scroll bugs only show when a fragment is hidden again.
+
+## Static conversation {.smaller}
+
+No fragments, everything visible on load. Checks base layout, speaker colours, and continuation grouping.
+
+::: {.chat theme="discord" names="Hamlet,Horatio,Marcellus"}
+::: {.speaker-2}
+O Romeo, Romeo, wherefore art thou Romeo?
+:::
+
+::: {.speaker-1}
+I take thee at thy word.
+:::
+
+::: {.speaker-1}
+Call me but love, and I'll be new baptized.
+:::
+
+::: {.speaker-2}
+What man art thou that, thus bescreened in night, so stumblest on my counsel?
+:::
+:::
+
+## Four speakers {.smaller}
+
+All four slots, revealed as fragments.
+
+::: {.chat theme="discord" names="Jo,Meg,Amy,Beth"}
+::: {.speaker-1}
+I shall write a splendid book someday, and then we shall all be proud of me!
+:::
+
+::: {.fragment .speaker-2}
+We are proud of you now, Jo, but do try to speak properly.
+:::
+
+::: {.fragment .speaker-3}
+I think it's very becoming to be modest about one's gifts.
+:::
+
+::: {.fragment .speaker-4}
+I hope the book will be very good, Jo.
+:::
+
+::: {.fragment .speaker-1}
+It shall be! Full of thrilling adventure and noble heroines.
+:::
+:::
+
+## Reactions {.smaller}
+
+Several pills on one bubble, and a pill on the newest bubble at the bottom edge. That last one is the case where attaching a pill can push its own bubble out of view.
+
+::: {.chat theme="discord" names="Hamlet,Horatio,Marcellus"}
+::: {.speaker-1}
+There are more things in heaven and earth, Horatio, than are dreamt of in your philosophy.
+:::
+
+[😮]{.fragment .reaction}
+
+[👍]{.fragment .reaction}
+
+[🔥]{.fragment .reaction}
+
+::: {.fragment .speaker-2}
+O day and night, but this is wondrous strange!
+:::
+
+[😂]{.fragment .reaction}
+
+::: {.fragment .speaker-1}
+And therefore as a stranger give it welcome.
+:::
+
+::: {.fragment .speaker-2}
+How is't, my noble lord?
+:::
+
+[❤️]{.fragment .reaction}
+
+[🎭]{.fragment .reaction}
+:::
+
+## Delayed reactions {.smaller}
+
+`fragment-index` out of document order: the reactions on the first reply land only after the rest of the conversation has arrived, so they fire against an already-scrolled transcript.
+
+::: {.chat theme="discord" names="Hamlet,Horatio,Marcellus"}
+::: {.speaker-1}
+There are more things in heaven and earth, Horatio.
+:::
+
+::: {.fragment .speaker-2 fragment-index="1"}
+O day and night, but this is wondrous strange!
+:::
+
+[😮]{.fragment .reaction fragment-index="4"}
+
+[❤️]{.fragment .reaction fragment-index="5"}
+
+::: {.fragment .speaker-1 fragment-index="2"}
+And therefore as a stranger give it welcome.
+:::
+
+::: {.fragment .speaker-3 fragment-index="3"}
+How is't, my noble lord?
+:::
+:::
+
+## Typing indicators {.smaller}
+
+Each typing bubble takes two steps: dots, then text. The bubble should grow smoothly and the text fade in only once it has finished growing.
+
+::: {.chat theme="discord" names="Hamlet,Horatio,Marcellus"}
+::: {.speaker-1}
+Wherefore art thou?
+:::
+
+::: {.fragment .speaker-2 .typing}
+I've been here all along beneath thy window.
+:::
+
+::: {.fragment .speaker-1 .typing}
+Then why didst thou not speak sooner?
+:::
+
+::: {.fragment .speaker-2 .typing}
+I was composing the perfect words.
+:::
+:::
+
+## Typing → tall text {.smaller}
+
+A short typing bubble expanding into several lines. The growth is larger than the scroll buffer, so this is where a scroll computed against the pre-growth height lands short.
+
+::: {.chat theme="discord" names="Hamlet,Horatio,Marcellus"}
+::: {.speaker-1}
+What didst the messenger say?
+:::
+
+::: {.fragment .speaker-2}
+Give me a moment, it was a long speech.
+:::
+
+::: {.fragment .speaker-1 .typing}
+He said that the prince hath quite forbid this bandying in Verona streets, and that if ever we disturb the quiet of the town again our lives shall pay the forfeit of the peace — and then he said a good deal more besides, none of it encouraging.
+:::
+
+::: {.fragment .speaker-2 .typing}
+That is a great deal more than I hoped for.
+:::
+:::
+
+## Typing plus reactions {.smaller}
+
+The two dynamic features on the same bubble: a pill attaches to a bubble that has already grown once.
+
+::: {.chat theme="discord" names="Hamlet,Horatio,Marcellus"}
+::: {.speaker-1}
+Art thou there?
+:::
+
+::: {.fragment .speaker-2 .typing}
+I am, and I have been listening the whole while.
+:::
+
+[👀]{.fragment .reaction}
+
+::: {.fragment .speaker-1 .typing}
+Then thou hast heard everything.
+:::
+
+[😅]{.fragment .reaction}
+:::
+
+## Image bubble {.smaller}
+
+An animated GIF inside a bubble. Reload the slide with a cold cache: the bubble must still be fully in view once the image finishes decoding.
+
+::: {.chat theme="discord" names="Hamlet,Horatio,Marcellus"}
+::: {.speaker-1}
+How dost thou fare this fine morning?
+:::
+
+::: {.fragment .speaker-2}
+![](../giphy.gif)
+:::
+
+::: {.fragment .speaker-1}
+Ha! I see thou art in good spirits.
+:::
+:::
+
+## Plot output {.smaller}
+
+A knitr chunk inside a bubble. Checks that the Quarto cell wrappers are stripped and that the plot is measured correctly for scrolling.
+
+::: {.chat theme="discord" names="Hamlet,Horatio,Marcellus"}
+::: {.speaker-2}
+Can you show me the displacement vs. fuel economy relationship?
+:::
+
+::: {.fragment .speaker-1}
+```{r}
+plot(mpg ~ disp, data = mtcars)
+```
+:::
+
+::: {.fragment .speaker-2}
+Clear negative relationship: bigger engines, worse mileage.
+:::
+:::
+
+## Scroll stress {.smaller}
+
+Long enough to overflow several times over. The newest bubble should stay just above the bottom edge on every step, forwards and backwards, and the top fade mask should appear as soon as the transcript scrolls.
+
+::: {.chat theme="discord" names="Hamlet,Horatio,Marcellus"}
+::: {.speaker-1}
+There are more things in heaven and earth, Horatio, than are dreamt of in your philosophy.
+:::
+
+::: {.fragment .speaker-2}
+O day and night, but this is wondrous strange!
+:::
+
+::: {.fragment .speaker-1}
+And therefore as a stranger give it welcome.
+:::
+
+::: {.fragment .speaker-2}
+How is't, my noble lord?
+:::
+
+::: {.fragment .speaker-1}
+O, wonderful!
+:::
+
+::: {.fragment .speaker-2}
+Good my lord, tell it.
+:::
+
+::: {.fragment .speaker-1}
+No, you'll reveal it.
+:::
+
+::: {.fragment .speaker-2}
+Not I, my lord, by heaven.
+:::
+
+::: {.fragment .speaker-1}
+How say you then — would heart of man once think it? But you'll be secret?
+:::
+
+::: {.fragment .speaker-2}
+Ay, by heaven, my lord.
+:::
+
+::: {.fragment .speaker-1}
+There's ne'er a villain dwelling in all Denmark but he's an arrant knave.
+:::
+
+::: {.fragment .speaker-2}
+There needs no ghost, my lord, come from the grave to tell us this.
+:::
+
+::: {.fragment .speaker-1}
+Why, right, you are i' the right. And so, without more circumstance at all, I hold it fit that we shake hands and part.
+:::
+
+::: {.fragment .speaker-2}
+These are but wild and whirling words, my lord.
+:::
+:::
+
+## Scroll stress: mixed content {.smaller}
+
+The same overflow, but the last steps are a tall typing reveal and an image, i.e. every height change lands while the transcript is already scrolled to the bottom.
+
+::: {.chat theme="discord" names="Hamlet,Horatio,Marcellus"}
+::: {.speaker-1}
+Let me tell thee of the night's events.
+:::
+
+::: {.fragment .speaker-2}
+Go on.
+:::
+
+::: {.fragment .speaker-1}
+It began quietly enough.
+:::
+
+::: {.fragment .speaker-2}
+It always does.
+:::
+
+::: {.fragment .speaker-1}
+Then the watch came by, and after them the prince himself.
+:::
+
+::: {.fragment .speaker-2}
+The prince! At that hour?
+:::
+
+::: {.fragment .speaker-1}
+The very same.
+:::
+
+[😮]{.fragment .reaction}
+
+::: {.fragment .speaker-2 .typing}
+And what didst thou do then? Tell me everything, and leave nothing out, for I shall hear it from someone else by morning and I would rather hear it from thee.
+:::
+
+::: {.fragment .speaker-1}
+![](../giphy.gif)
+:::
+
+::: {.fragment .speaker-2}
+That is not an answer.
+:::
+:::
+
+## Reactions at the fold {.smaller}
+
+A long conversation whose final steps are reactions on the newest bubble, i.e. pills attaching while the transcript is already scrolled to the bottom. Attaching a pill grows the message, so the transcript has to scroll again to keep it where it was.
+
+::: {.chat theme="discord" names="Hamlet,Horatio,Marcellus"}
+::: {.speaker-1}
+Let me tell thee of the night's events.
+:::
+
+::: {.fragment .speaker-2}
+Go on.
+:::
+
+::: {.fragment .speaker-1}
+It began quietly enough.
+:::
+
+::: {.fragment .speaker-2}
+It always does.
+:::
+
+::: {.fragment .speaker-1}
+Then the watch came by, and after them the prince himself.
+:::
+
+::: {.fragment .speaker-2}
+The prince! At that hour?
+:::
+
+::: {.fragment .speaker-1}
+The very same, and in no mood for excuses from any of us.
+:::
+
+::: {.fragment .speaker-2}
+And what didst thou say to him?
+:::
+
+::: {.fragment .speaker-1}
+Nothing at all. I found the nearest doorway and I stayed in it.
+:::
+
+[😂]{.fragment .reaction}
+
+[👏]{.fragment .reaction}
+:::
+
+## Legacy classes {.smaller}
+
+`bubble-right` / `bubble-left` / `bubble-left-2` / `bubble-left-3` are aliases for slots 1-4 and must behave identically.
+
+::: {.chat theme="discord" names="Jo,Meg,Amy,Beth"}
+::: {.bubble-right}
+I shall write a splendid book someday.
+:::
+
+::: {.fragment .bubble-left}
+We are proud of you now, Jo.
+:::
+
+::: {.fragment .bubble-left-2}
+Will there be any fashionable people in it?
+:::
+
+::: {.fragment .bubble-left-3}
+I should like to read it very much.
+:::
+:::
+
+## Alternate `self` {.smaller}
+
+`self="2"` makes slot 2 the sender. Side-based themes should flip; flat themes should be unaffected.
+
+::: {.chat theme="discord" names="Juliet,Romeo,Nurse" self="2"}
+::: {.speaker-1}
+Wherefore art thou, Romeo?
+:::
+
+::: {.fragment .speaker-2}
+Here, beneath thy window.
+:::
+
+::: {.fragment .speaker-2}
+I have been here some while.
+:::
+
+::: {.fragment .speaker-3}
+Madam, your mother calls for you.
+:::
+:::
+
+## Avatars {.smaller}
+
+Explicit `avatars`, and a per-message `name` override on the last bubble. Themes without avatars should ignore both.
+
+::: {.chat theme="discord" names="Hamlet,Horatio,Marcellus" avatars="https://avatars.githubusercontent.com/u/1?v=4,https://avatars.githubusercontent.com/u/2?v=4"}
+::: {.speaker-1}
+There are more things in heaven and earth, Horatio.
+:::
+
+::: {.fragment .speaker-2}
+O day and night, but this is wondrous strange!
+:::
+
+::: {.fragment .speaker-3 name="A Voice"}
+Swear.
+:::
+:::

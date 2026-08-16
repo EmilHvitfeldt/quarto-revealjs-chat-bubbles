@@ -1,2 +1,7 @@
 /.quarto/
 **/*.quarto_ipynb
+
+# Rendered output of the manual test decks (tests/README.md)
+/tests/*.html
+/tests/*_files/
+/tests/*_cache/
