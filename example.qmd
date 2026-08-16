@@ -235,6 +235,84 @@ Always, when I think of thee.
 :::
 :::
 
+## Slack Theme
+
+::: {.chat theme="slack" names="Jo,Meg,Amy,Beth"}
+::: {.speaker-1}
+I shall write a splendid book someday.
+:::
+
+::: {.fragment .speaker-1}
+Full of thrilling adventure and noble heroines.
+:::
+
+::: {.fragment .speaker-2}
+We are proud of you now, Jo, but do try to speak properly.
+:::
+
+[🎉]{.fragment .reaction}
+
+::: {.fragment .speaker-3}
+Will there be any fashionable people in it?
+:::
+
+::: {.fragment .speaker-4}
+I should like to read it very much.
+:::
+:::
+
+## Discord Theme
+
+::: {.chat theme="discord" names="Hamlet,Horatio,Marcellus"}
+::: {.speaker-1}
+There are more things in heaven and earth, Horatio.
+:::
+
+::: {.fragment .speaker-2}
+O day and night, but this is wondrous strange!
+:::
+
+[😮]{.fragment .reaction}
+
+::: {.fragment .speaker-3}
+How is't, my noble lord?
+:::
+
+::: {.fragment .speaker-1}
+And therefore as a stranger give it welcome.
+:::
+
+::: {.fragment .speaker-1}
+But you'll be secret?
+:::
+:::
+
+## Teams Theme
+
+::: {.chat theme="teams" names="You,Juliet,Nurse" self="1"}
+::: {.speaker-2}
+Wherefore art thou, Romeo?
+:::
+
+::: {.fragment .speaker-1}
+Here, beneath thy window.
+:::
+
+::: {.fragment .speaker-1}
+I have been here some while.
+:::
+
+[👀]{.fragment .reaction}
+
+::: {.fragment .speaker-3}
+Madam, your mother calls for you.
+:::
+
+::: {.fragment .speaker-2}
+Anon, good nurse!
+:::
+:::
+
 ## Typing Indicator Demo
 
 *Romeo · Juliet*

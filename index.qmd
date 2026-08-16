@@ -1,12 +1,12 @@
 ---
 title: "quarto-revealjs-chat-bubbles"
-subtitle: "iOS-style chat bubbles for Quarto Reveal.js presentations"
+subtitle: "Chat conversations for Quarto Reveal.js presentations"
 format:
   html:
     theme: cosmo
 ---
 
-Add iMessage-style chat bubbles to your Quarto Reveal.js presentations. Messages appear one at a time as fragments, and long conversations scroll automatically to keep the latest message in view.
+Add chat conversations to your Quarto Reveal.js presentations, styled after iMessage, Slack, Discord, or Microsoft Teams. Messages appear one at a time as fragments, and long conversations scroll automatically to keep the latest message in view.
 
 [GitHub](https://github.com/EmilHvitfeldt/quarto-revealjs-chat-bubbles){.btn .btn-outline-secondary}
 
@@ -33,19 +33,19 @@ revealjs-plugins:
   - chat-bubbles
 ```
 
-Then write a conversation using `.chat` and bubble classes. Add `.fragment` to any bubble you want to reveal on a keypress:
+Then write a conversation using `.chat` and speaker classes. Add `.fragment` to any message you want to reveal on a keypress:
 
 ```markdown
 ::: {.chat}
-::: {.bubble-right}
+::: {.speaker-1}
 Hey, are you coming tonight?
 :::
 
-::: {.fragment .bubble-left}
+::: {.fragment .speaker-2}
 Yeah! What time does it start?
 :::
 
-::: {.fragment .bubble-right}
+::: {.fragment .speaker-1}
 Doors open at 7
 :::
 :::
@@ -53,38 +53,75 @@ Doors open at 7
 
 ---
 
-## Bubble classes
+## Themes
 
-| Class | Side | Color |
-|-------|------|-------|
-| `.bubble-right` | Right | iMessage blue |
-| `.bubble-left` | Left | Light gray |
-| `.bubble-left-2` | Left | Green |
-| `.bubble-left-3` | Left | Purple |
+Set `theme` on the `.chat` container. Themes are per conversation, so one deck can mix platforms.
 
-`.bubble-right` is the "self" sender. Use `.bubble-left` variants for other participants — useful for group conversations with multiple speakers.
+| Theme | Layout | Looks like |
+|-------|--------|-----------|
+| `imessage` (default) | Alternating sides, tailed bubbles | iOS Messages |
+| `slack` | Single column, avatar and name | Slack |
+| `discord` | Single column, dark surface | Discord |
+| `teams` | Alternating bubbles with avatars | Microsoft Teams |
+
+Themes that show names need a roster. `names` maps positionally onto the speaker slots:
+
+```markdown
+::: {.chat theme="slack" names="Jo,Meg,Amy"}
+::: {.speaker-1}
+I shall write a splendid book someday.
+:::
+
+::: {.fragment .speaker-2}
+We are proud of you now, Jo.
+:::
+
+::: {.fragment .speaker-3}
+Will there be any fashionable people in it?
+:::
+:::
+```
+
+Avatars default to the speaker's initial on a coloured background; pass `avatars="a.png,b.png"` to use images instead. Consecutive messages from the same speaker are grouped automatically.
+
+---
+
+## Speaker classes
+
+| Class | Color |
+|-------|-------|
+| `.speaker-1` | Blue |
+| `.speaker-2` | Gray (slate for avatars) |
+| `.speaker-3` | Green |
+| `.speaker-4` | Purple |
+
+What a slot looks like depends on the theme: in iMessage it decides the side and the bubble colour, in Slack and Discord it colours the avatar and name.
+
+`.speaker-1` is the sender by default, which in the alternating themes is the person on the right. Point that at another slot with `self="2"` on the container.
+
+The original class names (`.bubble-right`, `.bubble-left`, `.bubble-left-2`, `.bubble-left-3`) still work and map to `.speaker-1` through `.speaker-4`, so existing decks need no changes.
 
 ---
 
 ## Group chats
 
-Use all four classes together for multi-person conversations:
+Use all four slots together for multi-person conversations:
 
 ```markdown
 ::: {.chat}
-::: {.bubble-right}
+::: {.speaker-1}
 Alright who's bringing what to the potluck?
 :::
 
-::: {.fragment .bubble-left}
+::: {.fragment .speaker-2}
 I can do dessert
 :::
 
-::: {.fragment .bubble-left-2}
+::: {.fragment .speaker-3}
 I'll bring drinks
 :::
 
-::: {.fragment .bubble-left-3}
+::: {.fragment .speaker-4}
 Can I just bring chips
 :::
 :::
@@ -94,15 +131,15 @@ Can I just bring chips
 
 ## Typing indicator
 
-Add `.typing` to any `.fragment` bubble for a two-step reveal: the first keypress shows an animated three-dot typing indicator, and the next keypress expands the bubble and reveals the message text.
+Add `.typing` to any `.fragment` message for a two-step reveal: the first keypress shows an animated three-dot typing indicator, and the next keypress expands the bubble and reveals the message text.
 
 ```markdown
 ::: {.chat}
-::: {.bubble-right}
+::: {.speaker-1}
 Are you still there?
 :::
 
-::: {.fragment .bubble-left .typing}
+::: {.fragment .speaker-2 .typing}
 Sorry, was typing a really long reply.
 :::
 :::
@@ -112,15 +149,15 @@ Sorry, was typing a really long reply.
 
 ## Images and plots
 
-Bubbles can contain images or R/Python plot output — just place them inside the bubble div as usual:
+Messages can contain images or R/Python plot output. Place them inside the message div as usual:
 
 ````markdown
 ::: {.chat}
-::: {.bubble-right}
+::: {.speaker-1}
 ![](photo.gif)
 :::
 
-::: {.fragment .bubble-left}
+::: {.fragment .speaker-2}
 Haha love it
 :::
 :::
@@ -130,11 +167,11 @@ Code chunk output works the same way:
 
 ````markdown
 ::: {.chat}
-::: {.bubble-left}
+::: {.speaker-2}
 Can you show me that plot?
 :::
 
-::: {.fragment .bubble-right}
+::: {.fragment .speaker-1}
 ```{{r}}
 plot(mpg ~ disp, data = mtcars)
 ```
@@ -150,9 +187,13 @@ Override the CSS custom properties in your own stylesheet:
 
 ```css
 :root {
-  --bubble-blue:   #FF3B30;  /* sender bubble   */
-  --bubble-gray:   #E9E9EB;  /* first receiver  */
-  --bubble-green:  #34C759;  /* second receiver */
-  --bubble-purple: #AF52DE;  /* third receiver  */
+  --bubble-blue:   #FF3B30;  /* speaker 1 */
+  --bubble-gray:   #E9E9EB;  /* speaker 2 */
+  --bubble-green:  #34C759;  /* speaker 3 */
+  --bubble-purple: #AF52DE;  /* speaker 4 */
+
+  --bubble-slate:  #5A6B7B;  /* speaker 2's avatar and name */
 }
 ```
+
+`--bubble-slate` exists because speaker 2's near-white default reads well as a bubble fill but disappears when the same colour has to fill a small avatar or colour a username.
