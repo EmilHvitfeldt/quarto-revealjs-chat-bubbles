@@ -152,6 +152,13 @@
   to   { opacity: 0; transform: scale(0.4); }
 }
 
+/* The height of one pill, kept in step with the box below by hand: font-size
+   0.75em at line-height 1, plus 2px padding and 1px border top and bottom.
+   Themes that place reactions in the flow use it to reserve the row. */
+:root {
+  --reaction-pill-height: calc(0.75em + 6px);
+}
+
 .reaction-pill {
   display: inline-flex;
   align-items: center;
@@ -329,12 +336,18 @@
   display: none;
 }
 
-/* Reactions sit below the message rather than overlapping a bubble corner */
+/* Reactions sit below the message rather than overlapping a bubble corner.
+   Being in the flow, the row would otherwise contribute no height until the
+   first pill lands in it, growing the whole transcript mid-presentation. The
+   container is only shown on [data-slot].has-reactions, which is set during
+   setup, so reserving one row's worth here costs nothing on messages that
+   never receive a reaction. iMessage reserves the same space with margin. */
 [data-chat-theme="slack"] .bubble-reactions,
 [data-chat-theme="discord"] .bubble-reactions {
   position: static;
   grid-area: reactions;
   margin-top: 0.3em;
+  min-height: var(--reaction-pill-height);
 }
 
 
@@ -511,6 +524,7 @@
   position: static;
   grid-area: reactions;
   margin-top: 0.25em;
+  min-height: var(--reaction-pill-height);
 }
 
 [data-chat-theme="teams"] [data-self] .bubble-reactions {
