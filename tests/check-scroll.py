@@ -1,12 +1,20 @@
 #!/usr/bin/env python3
 """Step through the rendered test decks and assert the transcript scrolled far enough.
 
-The invariant: once everything on a step has settled, the newest visible bubble must
-sit at least `buffer` px above the bottom edge of its transcript, or the transcript
-must already be scrolled as far as it goes. That is exactly what chat-bubbles.js
-aims for, so anything that changes height *after* the scroll is computed (a typing
-bubble growing, a reaction pill attaching, an image finishing its decode) shows up
-here as a scroll that landed short.
+Two invariants are checked.
+
+1. Once everything on a step has settled, the newest visible bubble must sit at
+   least `buffer` px above the bottom edge of its transcript, or the transcript must
+   already be scrolled as far as it goes. That is exactly what chat-bubbles.js aims
+   for, so anything that changes height *after* the scroll is computed (a typing
+   bubble growing, an image finishing its decode) shows up as a scroll that landed
+   short.
+
+2. Attaching a reaction pill must not change the height of the transcript box
+   itself. Room for one row of pills is reserved during setup, so a pill landing
+   should be invisible to the surrounding slide layout. A theme that places
+   reactions in the flow without reserving that row makes the whole chat area grow
+   mid-presentation.
 
 Usage:
 
@@ -42,6 +50,8 @@ PROBE = """
     scrollTop: Math.round(chat.scrollTop),
     wanted: Math.round(wanted),
     short: Math.round(wanted - chat.scrollTop),
+    chatHeight: Math.round(chat.getBoundingClientRect().height),
+    pills: chat.querySelectorAll('.reaction-pill').length,
     text: b.textContent.trim().replace(/\\s+/g, ' ').slice(0, 40),
   };
 }
@@ -57,11 +67,22 @@ def check(page, path):
     for h in range(page.evaluate("() => Reveal.getTotalSlides()")):
         page.evaluate(f"() => Reveal.slide({h}, 0, -1)")
         page.wait_for_timeout(400)
+        previous = None
         for step in range(60):
             probe = page.evaluate(PROBE, BUFFER)
             # 2px of slack for sub-pixel layout and rounding
             if probe and probe["short"] > 2:
-                failures.append((h, step, probe))
+                failures.append((h, step, f"{probe['short']}px short "
+                                          f"(scrollTop {probe['scrollTop']}, "
+                                          f"wanted {probe['wanted']})", probe["text"]))
+            if (probe and previous
+                    and probe["pills"] != previous["pills"]
+                    and probe["chatHeight"] != previous["chatHeight"]):
+                failures.append((h, step, f"a reaction grew the transcript by "
+                                          f"{probe['chatHeight'] - previous['chatHeight']}px "
+                                          f"({previous['chatHeight']} to {probe['chatHeight']})",
+                                 probe["text"]))
+            previous = probe
             page.evaluate("() => Reveal.next()")
             page.wait_for_timeout(SETTLE_MS)
             if page.evaluate("() => Reveal.getIndices().h") != h:
@@ -85,9 +106,8 @@ def main():
             if failures:
                 failed = True
                 print(f"FAIL {deck.name}")
-                for h, step, pr in failures:
-                    print(f"  slide {h} step {step}: {pr['short']}px short "
-                          f"(scrollTop {pr['scrollTop']}, wanted {pr['wanted']}) {pr['text']!r}")
+                for h, step, problem, text in failures:
+                    print(f"  slide {h} step {step}: {problem} {text!r}")
             else:
                 print(f"ok   {deck.name}")
         browser.close()
